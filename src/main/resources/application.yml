@@ -1,0 +1,9 @@
+server:
+  port: 8683
+# happymap.game.alsritter.icu
+
+# 配置日志级别
+logging:
+  level:
+    com.alsritter: debug
+    org.springframework: info
