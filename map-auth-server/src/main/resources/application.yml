@@ -4,7 +4,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
   application:
-    name: application
-  profiles:
-    active: dev,db
+    name: auth-service
 
+rsa:
+  key:
+    pubKeyPath: "classpath:rsa/id_key_rsa.pub"
+    priKeyPath: "classpath:rsa/id_key_rsa"

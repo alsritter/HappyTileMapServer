@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "rsa.key.priKeyPath",
+      "type": "java.lang.String",
+      "description": "自定义的私钥位置."
+    },
+    {
+      "name": "rsa.key.pubKeyPath",
+      "type": "java.lang.String",
+      "description": "自定义的公钥位置."
+    }
+  ]
+}

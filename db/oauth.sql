@@ -36,6 +36,10 @@ CREATE TABLE `tb_permission`
   DEFAULT CHARSET = utf8
   ROW_FORMAT = DYNAMIC COMMENT ='权限表';
 
+INSERT INTO `tb_permission` value (1, null, '删除权限', 'DELETE', '', '删除权限', CURRENT_TIMESTAMP(0),CURRENT_TIMESTAMP(0));
+INSERT INTO `tb_permission` value (2, null, '修改权限', 'UPDATE', '', '修改权限', CURRENT_TIMESTAMP(0),CURRENT_TIMESTAMP(0));
+INSERT INTO `tb_permission` value (3, null, '添加数据权限', 'INSERT', '', '添加数据权限', CURRENT_TIMESTAMP(0),CURRENT_TIMESTAMP(0));
+INSERT INTO `tb_permission` value (4, null, '查询权限', 'QUERY', '', '查询权限', CURRENT_TIMESTAMP(0),CURRENT_TIMESTAMP(0));
 
 -- ----------------------------
 -- 创建角色
@@ -57,6 +61,8 @@ CREATE TABLE `tb_role`
   DEFAULT CHARSET = utf8
   ROW_FORMAT = DYNAMIC COMMENT ='角色表';
 
+INSERT INTO `tb_role` VALUES (1, null, '管理员', 'admin', null, CURRENT_TIMESTAMP(0), CURRENT_TIMESTAMP(0), 0);
+INSERT INTO `tb_role` VALUES (2, null, '一般用户', 'user', null, CURRENT_TIMESTAMP(0), CURRENT_TIMESTAMP(0), 0);
 
 -- ----------------------------
 -- 角色权限表（多对多）
@@ -72,6 +78,13 @@ CREATE TABLE `tb_role_permission`
   AUTO_INCREMENT = 0
   DEFAULT CHARSET = utf8
   ROW_FORMAT = DYNAMIC COMMENT ='角色权限表';
+
+INSERT INTO `tb_role_permission` values (1 ,1 ,1);
+INSERT INTO `tb_role_permission` values (2 ,1 ,2);
+INSERT INTO `tb_role_permission` values (3 ,1 ,3);
+INSERT INTO `tb_role_permission` values (4 ,1 ,4);
+INSERT INTO `tb_role_permission` values (5 ,2 ,3);
+INSERT INTO `tb_role_permission` values (6 ,2 ,4);
 
 
 -- ----------------------------
@@ -117,7 +130,12 @@ CREATE TABLE `tb_user_role`
   ROW_FORMAT = DYNAMIC COMMENT ='用户角色表';
 
 
--- 注意，下面两张表不用管它的字段，它们都是 spring-oauth2.0 提供的标准字段，而且也无需自己查询这表，
+
+
+
+
+
+    -- 注意，下面两张表不用管它的字段，它们都是 spring-oauth2.0 提供的标准字段，而且也无需自己查询这表，
 -- spring-oauth2.0 提供了 JdbcClientDetailsService 和 JdbcAuthorizationCodeServices 工具类自动查询这个表
 -- 所以只需按照标准创建这个表就行了
 

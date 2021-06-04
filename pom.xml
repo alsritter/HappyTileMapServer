@@ -13,6 +13,8 @@
         <module>map-gateway</module>
         <module>map-eureka</module>
         <module>map-common</module>
+        <module>map-service-api</module>
+        <module>map-service</module>
     </modules>
 
     <!--把当前设置 pom-->
@@ -28,11 +30,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-
+        <!--各种小工具-->
         <log4j.version>1.2.17</log4j.version>
         <lombok.version>1.18.16</lombok.version>
-        <mica.version>1.2.2</mica.version>
-
+        <jwt.version>0.10.7</jwt.version>
+        <cn.hutool>5.6.6</cn.hutool>
+        <fastjson>1.2.76</fastjson>
 
         <!--spring相关-->
         <druid-spring-boot-starter.version>1.2.5</druid-spring-boot-starter.version>
@@ -58,6 +61,7 @@
     </properties>
 
     <!--用于统一管理依赖版本，但是 dependencyManagement 标签不会引入依赖-->
+    <!--这里只用来引入 pom 不要引入具体的依赖包，避免把这个根 pom 文件弄乱-->
     <dependencyManagement>
         <dependencies>
             <!--引入 springboot 依赖 pom-->
@@ -78,21 +82,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <dependency>
-                <groupId>net.dreamlu</groupId>
-                <artifactId>mica-bom</artifactId>
-                <version>${mica.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!--引入 mybatis-->
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${mybatis-plus.version}</version>
-            </dependency>
-
             <!--spring cloud 阿里巴巴-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
@@ -101,58 +90,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-            <!--mysql 驱动-->
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql.version}</version>
-                <scope>runtime</scope>
-            </dependency>
-
-            <!-- druid 数据连接池-->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid-spring-boot-starter.version}</version>
-            </dependency>
-
-            <!--日志框架-->
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-
-            <!--Lombok-->
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-                <optional>true</optional>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
-
-    <!--&lt;!&ndash;因为上面的只是版本控制，并不会真的引入依赖，所以得加上这个&ndash;&gt;-->
-    <!--<dependencies>-->
-    <!--    &lt;!&ndash; 启用注解读取配置文件支持 &ndash;&gt;-->
-    <!--    <dependency>-->
-    <!--        <groupId>org.springframework.boot</groupId>-->
-    <!--        <artifactId>spring-boot-configuration-processor</artifactId>-->
-    <!--        <optional>true</optional>-->
-    <!--    </dependency>-->
-
-    <!--    &lt;!&ndash; lombok &ndash;&gt;-->
-    <!--    <dependency>-->
-    <!--        <groupId>org.projectlombok</groupId>-->
-    <!--        <artifactId>lombok</artifactId>-->
-    <!--        <scope>provided</scope>-->
-    <!--    </dependency>-->
-
-    <!--</dependencies>-->
-
 
     <repositories>
         <!--使用阿里的镜像库-->
