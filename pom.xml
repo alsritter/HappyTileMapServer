@@ -5,20 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.alsritter</groupId>
-    <artifactId>happytilemapserver</artifactId>
+    <artifactId>map-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-    <modules>
-        <module>map-auth-server</module>
-        <module>map-gateway</module>
-        <module>map-eureka</module>
-        <module>map-common</module>
-        <module>map-service-api</module>
-        <module>map-service</module>
-    </modules>
 
     <!--把当前设置 pom-->
     <packaging>pom</packaging>
+
+    <modules>
+        <module>api-gateway</module>
+        <module>eureka-server</module>
+        <module>map-service</module>
+        <module>map-service-api</module>
+        <module>map-common</module>
+        <module>oauth2</module>
+    </modules>
+
 
     <!-- 统一管理版本 -->
     <properties>
@@ -32,14 +33,12 @@
 
         <!--各种小工具-->
         <log4j.version>1.2.17</log4j.version>
-        <lombok.version>1.18.16</lombok.version>
         <jwt.version>0.10.7</jwt.version>
         <cn.hutool>5.6.6</cn.hutool>
         <fastjson>1.2.76</fastjson>
 
         <!--spring相关-->
         <druid-spring-boot-starter.version>1.2.5</druid-spring-boot-starter.version>
-
         <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
         <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
         <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
@@ -51,13 +50,6 @@
         <dynamic-datasource.version>2.5.8</dynamic-datasource.version>
         <druid-spring-boot-starter.version>1.1.22</druid-spring-boot-starter.version>
 
-        <!--docker相关的配置-->
-        <docker.plugin.version>0.32.0</docker.plugin.version>
-        <docker.host>http://192.168.211.130:85</docker.host>
-        <docker.registry>192.168.0.100</docker.registry>
-        <docker.namespace>happymap</docker.namespace>
-        <docker.username>alsritter</docker.username>
-        <docker.password>Abc123456</docker.password>
     </properties>
 
     <!--用于统一管理依赖版本，但是 dependencyManagement 标签不会引入依赖-->
@@ -81,17 +73,16 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-            <!--spring cloud 阿里巴巴-->
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring-cloud-alibaba.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
     <repositories>
         <!--使用阿里的镜像库-->
@@ -105,16 +96,7 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-
         </repository>
-
-
-        <repository>
-            <id>activiti-repos2</id>
-            <name>Activiti Repository 2</name>
-            <url>https://app.camunda.com/nexus/content/groups/public</url>
-        </repository>
-
     </repositories>
 
     <pluginRepositories>
