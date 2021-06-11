@@ -17,7 +17,7 @@
         <module>map-service</module>
         <module>map-service-api</module>
         <module>map-common</module>
-        <module>oauth2</module>
+        <module>map-oauth2</module>
     </modules>
 
 
@@ -36,6 +36,7 @@
         <jwt.version>0.10.7</jwt.version>
         <cn.hutool>5.6.6</cn.hutool>
         <fastjson>1.2.76</fastjson>
+        <lombok>1.18.20</lombok>
 
         <!--spring相关-->
         <druid-spring-boot-starter.version>1.2.5</druid-spring-boot-starter.version>
@@ -80,6 +81,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

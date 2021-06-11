@@ -1,0 +1,27 @@
+server:
+  port: 38094
+
+spring:
+  application:
+    name: oauth2-service
+  main:
+    allow-bean-definition-overriding: true   #允许覆盖
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8000/eureka #单机版
+
+
+rsa:
+  key:
+    keypassword: 123456         # 私钥加解密密码 keypass
+    storepassword: 123456       # 文件存储密码 storepass keystore
+    path: "classpath:rsa/jwt-key.jks"
+    alias: "jwt-key"
+
+logging:
+  level:
+    com.alsritter: debug
