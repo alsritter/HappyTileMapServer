@@ -94,10 +94,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints
                 // 别忘了设置 tokenServices，不设置这个默认走的是这个 AuthorizationServerEndpointsConfigurer 内部定义的 TokenService
                 .tokenServices(jwtTokenServices)
-                .userDetailsService(userService)                    // 设置用户验证服务。
-                .authenticationManager(authenticationManager)       // 密码授予的 AuthenticationManager，调用此方法才能支持 password 模式。
-                .accessTokenConverter(accessTokenConverter)
-                .tokenStore(jwtTokenStore);                         // 设置 Token 存储方式
+                // 说明：上面这个 tokenServices 设置项与下面 authenticationManager、accessTokenConverter、tokenStore 设置项的关系
+                // 下面的这些配置项是用来设置这个 AuthorizationServerEndpointsConfigurer 端点内置的 tokenServices
+                // 所以，如果使用了 tokenServices 这个设置项，则这些配置是无效的
+
+                .userDetailsService(userService);                    // 设置用户验证服务。
+                // .authenticationManager(authenticationManager)       // 密码授予的 AuthenticationManager，调用此方法才能支持 password 模式。
+                // .accessTokenConverter(accessTokenConverter)
+                // .tokenStore(jwtTokenStore);                         // 设置 Token 存储方式
         // .allowedTokenEndpointRequestMethods(HttpMethod.POST);// 允许post提交
     }
 

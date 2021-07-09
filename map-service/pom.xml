@@ -14,20 +14,14 @@
     <modules>
         <module>map-service-user</module>
         <module>map-service-test</module>
+        <module>map-service-websocket</module>
     </modules>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
-
     </dependencies>
 
 </project>
