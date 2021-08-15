@@ -1,0 +1,15 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: map-service-forum
+  profiles:
+    active: dev,db
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    # password: root123
+    database: 10
+
+

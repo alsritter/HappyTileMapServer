@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alsritter.service.forum.mapper.TbTopicMapper">
+    <sql id="tableName">
+        tb_topic
+    </sql>
+
+    <sql id="baseColumn">
+        topic_id,user_id,tag,status,title,content,browsed,prefer,create_time,last_modify_time,del_flag
+    </sql>
+
+</mapper>
