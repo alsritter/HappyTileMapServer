@@ -29,6 +29,8 @@ public class WebSocketServer {
     private Session session;
     // 连接的用户 id
     private String sid = "";
+    // 当前修改的 mapId
+    private String mapId = "";
 
     /**
      * 连接建立成功调用的方法
@@ -39,6 +41,7 @@ public class WebSocketServer {
         webSocketMap.put(sid, this);     // 加入 set 中
         addOnlineCount();                // 在线数加 1
         log.info("有新窗口开始监听:" + sid + ",当前在线人数为" + getOnlineCount());
+
         this.sid = sid;
         try {
             sendMessage("连接成功");
@@ -78,8 +81,8 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose() {
-        webSocketMap.remove(sid);  //从set中删除
-        subOnlineCount();           //在线数减1
+        webSocketMap.remove(sid);   // 从 set 中删除
+        subOnlineCount();           // 在线数减 1
         log.info("有一连接关闭！当前在线人数为" + getOnlineCount());
     }
 

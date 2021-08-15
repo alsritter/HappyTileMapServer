@@ -91,21 +91,23 @@ INSERT INTO `tb_role_permission` values (6 ,2 ,4);
 -- ----------------------------
 -- 用户表
 -- ----------------------------
-DROP TABLE IF EXISTS `tb_user`;
-CREATE TABLE `tb_user`
+
+create table tb_user
 (
-    `id`          bigint(20)   NOT NULL AUTO_INCREMENT,
-    `username`    varchar(50)  NOT NULL COMMENT '用户名',
-    `password`    varchar(64)  NOT NULL COMMENT '密码，加密存储',
-    `phone`       varchar(20)           DEFAULT NULL COMMENT '注册手机号',
-    `email`       varchar(50)           DEFAULT NULL COMMENT '注册邮箱',
-    `avatar`      varchar(255)          DEFAULT NULL COMMENT '头像地址',
-    `description` varchar(200)          DEFAULT NULL COMMENT '个人信息',
-    `created`     timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-    `updated`     timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
-    `lock_flag`   char(1)      NOT NULL DEFAULT '0' COMMENT '0-正常，1-锁定',
-    `del_flag`    char(1)      NOT NULL DEFAULT '0' COMMENT '0-正常，1-删除',
-    PRIMARY KEY (`id`),
+    user_id          bigint(20) auto_increment,
+    username         varchar(50)                                not null comment '用户名（不能重复）',
+    password         varchar(64)                                not null comment '密码，加密存储',
+    phone            varchar(20)                                null comment '注册手机号（不能重复）',
+    email            varchar(50)                                null comment '注册邮箱（不能重复）',
+    avatar           varchar(255)                               null comment '头像地址',
+    description      varchar(200)                               null comment '个人信息',
+    gender           tinyint unsigned default 0                 not null comment '0-女，1-男, 2-保密，',
+    create_time      timestamp        default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
+    last_modify_time timestamp        default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
+    status           tinyint unsigned default 0                 not null comment '0-正常，1-不可以评论，2-不可以登录',
+    lock_flag        tinyint unsigned default 0                 not null comment '0-正常，1-锁定',
+    del_flag         tinyint unsigned default 0                 not null comment '0-正常，1-删除',
+    primary key (`user_id`),
     UNIQUE KEY `username` (`username`) USING BTREE, -- USING BTREE 使用 B树索引
     UNIQUE KEY `phone` (`phone`) USING BTREE,
     UNIQUE KEY `email` (`email`) USING BTREE
@@ -113,7 +115,6 @@ CREATE TABLE `tb_user`
   AUTO_INCREMENT = 0
   DEFAULT CHARSET = utf8
   ROW_FORMAT = DYNAMIC COMMENT ='用户表';
-
 
 -- ----------------------------
 -- 用户角色表（多对多）
