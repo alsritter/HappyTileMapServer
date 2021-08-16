@@ -9,9 +9,6 @@ import com.alsritter.serviceapi.user.domain.SecurityUserDto;
  * @since 2021-06-05 17:00:11
  */
 public interface SecurityUserService {
-
-
     SecurityUserDto getUserInfoById(long id);
-
     SecurityUserDto getUserInfoByName(String username);
 }

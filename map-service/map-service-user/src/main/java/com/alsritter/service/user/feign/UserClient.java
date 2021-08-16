@@ -1,6 +1,7 @@
 package com.alsritter.service.user.feign;
 
 import com.alsritter.service.user.service.SecurityUserService;
+import com.alsritter.service.user.service.TbUserService;
 import com.alsritter.serviceapi.user.domain.SecurityUserDto;
 import com.alsritter.serviceapi.user.entity.TbUser;
 import com.alsritter.serviceapi.user.feign.IUserClient;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserClient implements IUserClient {
 
     private final SecurityUserService securityUserService;
+    private final TbUserService userService;
 
     @Override
     public ResponseEntity<SecurityUserDto> userInfoById(Long userId) {
@@ -33,7 +35,13 @@ public class UserClient implements IUserClient {
     }
 
     @Override
-    public ResponseEntity<Boolean> saveUser(TbUser user) {
-        return null;
+    public ResponseEntity<Boolean> addUser(TbUser user) {
+        try {
+            userService.addUser(user);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.ok(false);
+        }
+        return ResponseEntity.ok(true);
     }
 }

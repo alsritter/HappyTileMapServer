@@ -1,4 +1,4 @@
-package com.alsritter.oauth2.api;
+package com.alsritter.common.api;
 
 /**
  * 通用返回对象

@@ -29,7 +29,7 @@ public class SecurityUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> i
     @Override
     public SecurityUserDto getUserInfoById(long id) {
         TbUser tbUser = new TbUser();
-        tbUser.setId(id);
+        tbUser.setUserId(id);
         tbUser = baseMapper.selectById(tbUser);
         return getUserInfo(tbUser);
     }
@@ -46,8 +46,8 @@ public class SecurityUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> i
         SecurityUserDto userInfo = new SecurityUserDto();
         userInfo.setUser(tbUser);
         // userInfo.setPermissions(permissionsByUserId.stream().map(x -> new SimpleGrantedAuthority(x.getEnname())).collect(Collectors.toList()));
-        userInfo.setPermission(permissionMapper.findPermissionsByUserId(tbUser.getId()));
-        userInfo.setRoles(roleMapper.findRoleByUserId(tbUser.getId()));
+        userInfo.setPermission(permissionMapper.findPermissionsByUserId(tbUser.getUserId()));
+        userInfo.setRoles(roleMapper.findRoleByUserId(tbUser.getUserId()));
         return userInfo;
     }
 }

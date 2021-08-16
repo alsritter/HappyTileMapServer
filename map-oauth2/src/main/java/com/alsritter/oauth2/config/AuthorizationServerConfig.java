@@ -53,7 +53,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 @Setter(onMethod_ = {@Autowired})
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-
     private PasswordEncoder passwordEncoder;
     private UserService userService;
     private AuthenticationManager authenticationManager;

@@ -1,14 +1,6 @@
 server:
   port: 9527
 
-#eureka:
-#  client:
-#    register-with-eureka: true
-#    fetch-registry: true
-#    service-url:
-#      defaultZone: http://localhost:8000/eureka #单机版
-
-
 management:
   endpoints:
     web:
@@ -25,7 +17,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.211.138:8848
+        server-addr: 127.0.0.1:8848
 
     loadbalancer:
       retry:

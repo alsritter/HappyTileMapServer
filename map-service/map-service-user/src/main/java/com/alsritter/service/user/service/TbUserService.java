@@ -12,4 +12,5 @@ import com.alsritter.serviceapi.user.entity.TbUser;
  */
 public interface TbUserService {
     TbUser getUserById(long id);
+    void addUser(TbUser user);
 }

@@ -1,7 +1,7 @@
 package com.alsritter.oauth2.controller;
 
-import com.alsritter.oauth2.api.CommonResult;
-import com.alsritter.oauth2.api.ResultCode;
+import com.alsritter.common.api.CommonResult;
+import com.alsritter.common.api.ResultCode;
 import com.alsritter.oauth2.domain.RegisterUserTo;
 import com.alsritter.oauth2.domain.SecurityUser;
 import com.alsritter.oauth2.service.UserService;

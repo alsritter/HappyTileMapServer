@@ -6,7 +6,7 @@
     </sql>
 
     <sql id="baseColumn">
-        id,username,password,phone,email,avatar,description,created,updated,lock_flag,del_flag
+        user_id,username,password,phone,email,avatar,description,created,updated,lock_flag,del_flag
     </sql>
 
 </mapper>

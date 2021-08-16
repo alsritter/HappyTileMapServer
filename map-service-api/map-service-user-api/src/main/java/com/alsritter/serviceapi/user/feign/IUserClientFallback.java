@@ -24,7 +24,7 @@ public class IUserClientFallback implements IUserClient {
     }
 
     @Override
-    public ResponseEntity<Boolean> saveUser(TbUser user) {
+    public ResponseEntity<Boolean> addUser(TbUser user) {
         return ResponseEntity.badRequest().body(null);
     }
 }

@@ -1,6 +1,6 @@
 package com.alsritter.oauth2.service;
 
-import com.alsritter.oauth2.api.ResultCode;
+import com.alsritter.common.api.ResultCode;
 import com.alsritter.oauth2.domain.RegisterUserTo;
 import com.alsritter.oauth2.domain.SecurityUser;
 import com.alsritter.serviceapi.user.domain.SecurityUserDto;

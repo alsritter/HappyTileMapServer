@@ -1,4 +1,4 @@
-package com.alsritter.oauth2.api;
+package com.alsritter.common.api;
 
 import cn.hutool.http.HttpStatus;
 
@@ -30,7 +30,9 @@ public enum ResultCode implements IErrorCode {
     ACCOUNT_LOCKED(15005, "该账号已被锁定，请联系管理员!"),
     ACCOUNT_EXPIRED(15006, "该账号已过期，请联系管理员!"),
     PERMISSION_DENIED(15007, "没有访问权限，请联系管理员!"),
-    CREDENTIALS_EXPIRED(15008, "该账户的登录凭证已过期，请重新登录!");
+    CREDENTIALS_EXPIRED(15008, "该账户的登录凭证已过期，请重新登录!"),
+
+    USER_INSERT_FAILED(16001, "用户插入失败");
 
 
     private final long code;

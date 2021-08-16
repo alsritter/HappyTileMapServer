@@ -17,6 +17,7 @@
         <module>map-service-api</module>
         <module>map-common</module>
         <module>map-oauth2</module>
+        <module>map-oauth2-2</module>
     </modules>
 
 

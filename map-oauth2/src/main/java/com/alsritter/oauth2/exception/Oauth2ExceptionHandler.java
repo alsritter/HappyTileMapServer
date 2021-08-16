@@ -1,6 +1,6 @@
 package com.alsritter.oauth2.exception;
 
-import com.alsritter.oauth2.api.CommonResult;
+import com.alsritter.common.api.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

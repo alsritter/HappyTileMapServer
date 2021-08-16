@@ -42,6 +42,6 @@ public interface IUserClient {
      * @param user 用户实体
      * @return 用户信息
      */
-    @PostMapping(API_PREFIX + "/save-user")
-    ResponseEntity<Boolean> saveUser(@RequestBody TbUser user);
+    @PostMapping(API_PREFIX + "/add-user")
+    ResponseEntity<Boolean> addUser(@RequestBody TbUser user);
 }

@@ -1,12 +1,12 @@
-DROP DATABASE IF EXISTS `happy_map`;
+DROP DATABASE IF EXISTS `happy_map_user`;
 
-CREATE DATABASE `happy_map` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE `happy_map_user` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 
-USE `happy_map`;
+USE `happy_map_user`;
 
 
 /**
