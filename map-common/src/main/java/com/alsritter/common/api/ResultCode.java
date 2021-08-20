@@ -35,15 +35,15 @@ public enum ResultCode implements IErrorCode {
     USER_INSERT_FAILED(16001, "用户插入失败");
 
 
-    private final long code;
+    private final int code;
     private final String message;
 
-    ResultCode(long code, String message) {
+    ResultCode(int code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public long getCode() {
+    public int getCode() {
         return code;
     }
 

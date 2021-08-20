@@ -1,7 +1,8 @@
-package com.alsritter.oauth2_2.provider;
+package com.alsritter.common.token;
 
-import com.alsritter.oauth2_2.domain.SecurityUser;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -15,16 +16,24 @@ import java.util.Collection;
  * @version 1.0
  **/
 @Getter
+@Setter
+@ToString
 public class PhoneAuthenticationToken extends AbstractAuthenticationToken {
 
     //用户信息
     private SecurityUser user;
     private String phone;
-
     // 用户输入的验证码
     private String code;
     // 真正的验证码
     private String realCode;
+
+    /**
+     * 用于反序列化的无参构造
+     */
+    public PhoneAuthenticationToken() {
+        super(null);
+    }
 
     /**
      * 注意这个构造方法是认证时使用的

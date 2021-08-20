@@ -14,14 +14,14 @@ public class BusinessException extends RuntimeException {
      * serialVersionUID
      */
     private static final long serialVersionUID = 4306448854352716126L;
-    private final ResultCode resultCode;
+    private final int resultCode;
 
     /**
      * 无参构造函数
      */
     public BusinessException() {
         super();
-        this.resultCode = ResultCode.FAILED;
+        this.resultCode = ResultCode.FAILED.getCode();
     }
 
     /**
@@ -29,6 +29,14 @@ public class BusinessException extends RuntimeException {
      */
     public BusinessException(ResultCode resultCode) {
         super(resultCode.getMessage());
+        this.resultCode = resultCode.getCode();
+    }
+
+    /**
+     * 构造函数
+     */
+    public BusinessException(int resultCode, String message) {
+        super(message);
         this.resultCode = resultCode;
     }
 
@@ -37,7 +45,7 @@ public class BusinessException extends RuntimeException {
      */
     public BusinessException(String message) {
         super(message);
-        this.resultCode = ResultCode.FAILED;
+        this.resultCode = ResultCode.FAILED.getCode();
     }
 
     /**
@@ -48,7 +56,7 @@ public class BusinessException extends RuntimeException {
      */
     public BusinessException(String message, ResultCode resultCode, Throwable cause) {
         super(message, cause);
-        this.resultCode = resultCode;
+        this.resultCode = resultCode.getCode();
     }
 
     /**
@@ -58,7 +66,7 @@ public class BusinessException extends RuntimeException {
      */
     public BusinessException(String message, ResultCode resultCode) {
         super(message);
-        this.resultCode = resultCode;
+        this.resultCode = resultCode.getCode();
     }
 
     /**
@@ -68,11 +76,11 @@ public class BusinessException extends RuntimeException {
      */
     public BusinessException(ResultCode resultCode, Throwable cause) {
         super(cause);
-        this.resultCode = resultCode;
+        this.resultCode = resultCode.getCode();
     }
 
 
     public int getErrorCode() {
-        return (int) this.resultCode.getCode();
+        return this.resultCode;
     }
 }

@@ -1,13 +1,15 @@
 package com.alsritter.serviceapi.user.enums;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.baomidou.mybatisplus.core.enums.IEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum StatusEnum implements IEnum<Integer> {
     NORMAL(0, "正常"),
     NO_COMMENT(1, "不可以评论"),
     NO_LOGIN(2, "不可以登录");
-
     private final int value;
+
     private final String desc;
 
     StatusEnum(int value, String desc) {

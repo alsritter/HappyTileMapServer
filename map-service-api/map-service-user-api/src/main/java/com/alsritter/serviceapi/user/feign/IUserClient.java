@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
         value = AppConstant.APPLICATION_USER_NAME,
-        fallback = IUserClientFallback.class
+        fallback = IUserClientFallback.class,
+        configuration = {FeignErrorDecoder.class}
 )
 public interface IUserClient {
     String API_PREFIX = "/user";

@@ -1,6 +1,7 @@
 package com.alsritter.oauth2_2.provider;
 
-import com.alsritter.oauth2_2.domain.SecurityUser;
+import com.alsritter.common.token.PasswordAuthenticationToken;
+import com.alsritter.common.token.SecurityUser;
 import com.alsritter.oauth2_2.service.UserService;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,10 @@ public class PasswordAuthenticationProvider implements AuthenticationProvider, P
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         PasswordAuthenticationToken token = (PasswordAuthenticationToken) authentication;
-
         if (token.getUser() == null) return null;
 
         //验证账号密码
         SecurityUser user = userService.getUserByName(token.getUser().getUsername());
-
         if (user != null) {
             //加密密码的比较
             if (!passwordEncoder.matches(token.getUser().getUserPassword(), user.getPassword())) {

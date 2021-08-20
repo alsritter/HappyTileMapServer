@@ -1,5 +1,7 @@
 package com.alsritter.oauth2_2.config;
 
+import com.alsritter.oauth2_2.filters.AuthenticationProcessingFilter;
+import com.alsritter.oauth2_2.filters.FilterChainExceptionHandler;
 import com.alsritter.oauth2_2.provider.EmailAuthenticationProvider;
 import com.alsritter.oauth2_2.provider.PasswordAuthenticationProvider;
 import com.alsritter.oauth2_2.provider.PhoneAuthenticationProvider;
@@ -16,6 +18,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.web.filter.CorsFilter;
 
 /**
  * 配置 Spring Security
@@ -34,6 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final FilterChainExceptionHandler filterChainExceptionHandler;
 
     /**
      * 注入三个 provider，对应密码，手机号，邮箱三种登录方式
@@ -128,16 +133,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        http
+                .addFilterAfter(filterChainExceptionHandler, CorsFilter.class);
+
         http.csrf().disable()  // 先关闭 CSRF 防护（跨站请求伪造，其实就是使用 Cookie 的那堆屁事，如果使用 JWT 可以直接关闭它）
                 .authorizeRequests() // 允许使用 RequestMatcher 实现（即通过URL模式）基于 HttpServletRequest 限制访问
                 .antMatchers(HttpMethod.OPTIONS).permitAll();   // 这是跨域请求时浏览器会发的预请求，这里直接放行
 
 
         // 把自定义的过滤器加载 UsernamePasswordAuthenticationFilter 这个默认过滤器前面
-        http.addFilterBefore(authenticationProcessingFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationProcessingFilter(authenticationManager()),
+                UsernamePasswordAuthenticationFilter.class);
 
         http
                 .authorizeRequests()
+                .antMatchers("/oauth/**").permitAll() // 放行 /oauth/token
+                .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/**/api-docs").permitAll() // 放行swagger
                 .antMatchers(
                         "/**/*.js",
                         "/**/*.css",
@@ -146,23 +157,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.woff2",
                         "/code/image")
                 .permitAll();//以上的请求都不需要认证
-
-
-        // // app 登录的时候我们只要提交的 action，不要跳转到登录页
-        // http.formLogin()
-        //         //登录页面，app用不到
-        //         //.loginPage("/authentication/login")
-        //         //登录提交action，app会用到
-        //         // 用户名登录地址
-        //         .loginProcessingUrl("/form/token")
-        //         //成功处理器 返回Token
-        //         .successHandler(customAuthenticationSuccessHandler)
-        //         //失败处理器
-        //         .failureHandler(customAuthenticationFailureHandler);
-        //
-        // http.csrf().disable();
-
-        // 这里不要禁用 Session 因为需要它保存验证码之类的东西
-        // http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);    //禁用session
     }
 }

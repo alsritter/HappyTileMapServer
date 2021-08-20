@@ -101,7 +101,7 @@ create table tb_user
     email            varchar(50)                                null comment '注册邮箱（不能重复）',
     avatar           varchar(255)                               null comment '头像地址',
     description      varchar(200)                               null comment '个人信息',
-    gender           tinyint unsigned default 0                 not null comment '0-女，1-男, 2-保密，',
+    gender           tinyint unsigned default 0                 not null comment '0-男，1-女, 2-保密，',
     create_time      timestamp        default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
     last_modify_time timestamp        default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
     status           tinyint unsigned default 0                 not null comment '0-正常，1-不可以评论，2-不可以登录',

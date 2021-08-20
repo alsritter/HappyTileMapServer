@@ -1,11 +1,9 @@
 server:
-  port: 4031
+  port: 7088
 
 spring:
   application:
-    name: user-service
-  profiles:
-    active: dev,db
+    name: test-service
 
   cloud:
     nacos:
@@ -34,13 +32,30 @@ spring:
   #    type: redis
   #
 
+
+# 单独设置的
+security:
+  oauth2:
+    authorization:
+      # 当此服务端接收到来自客户端端的请求后，需要拿着请求中的 token 到认证服务端做 token 验证，就是请求的这个接口
+      check-token-access: http://localhost:9527/auth/oauth/check_token
+    client:
+      #  要和认证服务中的配置一致
+      client-id: webClient
+      client-secret: secret
+      # 授权码认证方式需要的
+      user-authorization-uri: http://localhost:9527/auth/oauth/authorize
+      # 密码模式需要用到的获取 token 的接口
+      access-token-uri: http://localhost:9527/auth/oauth/token
+    resource:
+      id: test-service
+      user-info-uri: test-service
 management:
   endpoints:
     web:
       exposure:
         include: "*"
 
-
 logging:
   level:
-    com.alsritter: debug
+    com.alsritter: info

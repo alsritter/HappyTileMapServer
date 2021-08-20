@@ -1,7 +1,8 @@
-package com.alsritter.oauth2_2.provider;
+package com.alsritter.common.token;
 
-import com.alsritter.oauth2_2.domain.SecurityUser;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -12,14 +13,21 @@ import java.util.Collection;
  * @version 1.0
  **/
 @Getter
+@Setter
+@ToString
 public class EmailAuthenticationToken extends AbstractAuthenticationToken {
     //用户信息
     private SecurityUser user;
     private String email;
-
     private String code;
     private String realCode;
 
+    /**
+     * 用于反序列化的无参构造
+     */
+    public EmailAuthenticationToken() {
+        super(null);
+    }
 
     /**
      * 注意这个构造方法是认证时使用的

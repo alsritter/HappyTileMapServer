@@ -1,4 +1,4 @@
-package com.alsritter.oauth2_2.config;
+package com.alsritter.oauth2_2.filters;
 
 import cn.hutool.core.util.StrUtil;
 import com.alsritter.oauth2_2.provider.Provider;
@@ -26,7 +26,7 @@ public class AuthenticationProcessingFilter extends AbstractAuthenticationProces
     /**
      * 设置默认的认证 url 地址
      */
-    protected AuthenticationProcessingFilter() {
+    public AuthenticationProcessingFilter() {
         super("/login");
     }
 
@@ -35,13 +35,14 @@ public class AuthenticationProcessingFilter extends AbstractAuthenticationProces
             throws AuthenticationException, IOException, ServletException {
         // 从前端取得 type 参数
         String type = request.getParameter("type");
-
         if (StrUtil.isEmpty(type)) {
             throw new InvalidRequestException("Missing login type");
         }
 
         // 策略模式
         Provider provider = new Provider(type);
-        return getAuthenticationManager().authenticate(provider.executeStrategy(request));
+        Authentication authentication = provider.executeStrategy(request);
+        Authentication authenticate = getAuthenticationManager().authenticate(authentication);
+        return authenticate;
     }
 }

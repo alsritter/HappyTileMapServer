@@ -1,7 +1,8 @@
-package com.alsritter.oauth2_2.provider;
+package com.alsritter.common.token;
 
-import com.alsritter.oauth2_2.domain.SecurityUser;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -9,15 +10,25 @@ import java.util.Collection;
 
 /**
  * Token 的核心在于两个构造方法，一个是认证前使用，一个是认证后使用。
+ * 这里把 Token 实体类放在这个公共包是因为资源服务器验证 Token 时需要反序列化这个类
  *
  * @author alsritter
  * @version 1.0
  **/
+@Getter
+@Setter
+@ToString
 public class PasswordAuthenticationToken extends AbstractAuthenticationToken {
 
     //用户信息
-    @Getter
-    private final SecurityUser user;
+    private SecurityUser user;
+
+    /**
+     * 用于反序列化的无参构造
+     */
+    public PasswordAuthenticationToken() {
+        super(null);
+    }
 
     /**
      * 注意这个构造方法是认证时使用的

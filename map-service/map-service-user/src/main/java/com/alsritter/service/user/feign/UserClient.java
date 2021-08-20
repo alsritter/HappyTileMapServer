@@ -1,5 +1,7 @@
 package com.alsritter.service.user.feign;
 
+import com.alsritter.common.api.ResultCode;
+import com.alsritter.common.exception.BusinessException;
 import com.alsritter.service.user.service.SecurityUserService;
 import com.alsritter.service.user.service.TbUserService;
 import com.alsritter.serviceapi.user.domain.SecurityUserDto;
@@ -40,7 +42,7 @@ public class UserClient implements IUserClient {
             userService.addUser(user);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.ok(false);
+            throw new BusinessException(ResultCode.USER_INSERT_FAILED);
         }
         return ResponseEntity.ok(true);
     }

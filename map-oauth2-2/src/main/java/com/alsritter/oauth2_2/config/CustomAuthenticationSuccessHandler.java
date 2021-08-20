@@ -56,16 +56,8 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     private AuthorizationServerTokenServices authorizationServerTokenServices;
     private PasswordEncoder passwordEncoder;
 
-    // private OAuth2RequestFactory oAuth2RequestFactory;
-    // private TokenGranter tokenGranter;
-
-    // // 从令牌端口取得令牌
-    // private TokenEndpoint tokenEndpoint;
-    // private DefaultTokenServices defaultTokenServices;
-
     /*
      * 认证成功后进行的操作
-     *
      */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -118,7 +110,6 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     }
 
     private String[] extractAndDecodeHeader(String header, HttpServletRequest request) throws IOException {
-
         byte[] base64Token = header.substring(6).getBytes(StandardCharsets.UTF_8);
         byte[] decoded;
 

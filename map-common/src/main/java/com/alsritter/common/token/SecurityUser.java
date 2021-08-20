@@ -1,4 +1,4 @@
-package com.alsritter.oauth2_2.domain;
+package com.alsritter.common.token;
 
 
 import io.swagger.annotations.ApiModel;

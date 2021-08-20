@@ -3,9 +3,10 @@ package com.alsritter.oauth2_2.controller;
 import com.alsritter.common.api.CommonResult;
 import com.alsritter.common.api.ResultCode;
 import com.alsritter.oauth2_2.domain.RegisterUserTo;
-import com.alsritter.oauth2_2.domain.SecurityUser;
+import com.alsritter.common.token.SecurityUser;
 import com.alsritter.oauth2_2.service.UserService;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 /**
  * @author alsritter
  * @version 1.0
  **/
+@Slf4j
 @Validated
 @RestController
 @RequestMapping("/login")
@@ -30,7 +31,11 @@ public class LoginController {
 
     @PostMapping("/register")
     public ResponseEntity<CommonResult<String>> register(@RequestBody @Validated RegisterUserTo user) {
-        if (!userService.registerUser(user)) {
+
+        try {
+            userService.registerUser(user);
+        } catch (Exception e) {
+            log.warn(e.getMessage());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                     .body(CommonResult.failed(ResultCode.FAILED, "注册失败"));
         }

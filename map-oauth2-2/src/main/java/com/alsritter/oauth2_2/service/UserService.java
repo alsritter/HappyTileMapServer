@@ -1,9 +1,8 @@
 package com.alsritter.oauth2_2.service;
 
 import com.alsritter.common.api.ResultCode;
-import com.alsritter.common.exception.BusinessException;
 import com.alsritter.oauth2_2.domain.RegisterUserTo;
-import com.alsritter.oauth2_2.domain.SecurityUser;
+import com.alsritter.common.token.SecurityUser;
 import com.alsritter.serviceapi.user.domain.SecurityUserDto;
 import com.alsritter.serviceapi.user.entity.TbUser;
 import com.alsritter.serviceapi.user.feign.IUserClient;

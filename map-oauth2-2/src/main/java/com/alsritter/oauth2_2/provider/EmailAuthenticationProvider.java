@@ -1,6 +1,8 @@
 package com.alsritter.oauth2_2.provider;
 
-import com.alsritter.oauth2_2.domain.SecurityUser;
+import com.alsritter.common.token.EmailAuthenticationToken;
+import com.alsritter.common.token.PhoneAuthenticationToken;
+import com.alsritter.common.token.SecurityUser;
 import com.alsritter.oauth2_2.service.UserService;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;

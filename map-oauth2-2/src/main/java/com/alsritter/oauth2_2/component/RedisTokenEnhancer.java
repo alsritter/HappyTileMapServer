@@ -19,14 +19,6 @@ public class RedisTokenEnhancer implements TokenEnhancer {
 
     /**
      * 返回一个增强后的 Token
-     * 这个在这个 Token 里面添加一些信息（HashMap 里面的内容）
-     * <p>
-     * 这个方法会在用户调用 /oauth/token 时调用
-     * 注意，这里的 getTokenType 方法的类型是前端传的 grant_type
-     * <p>
-     * 自定义 refresh_token 参考自：
-     * Spring Security OAuth2 Provider 之 自定义开发
-     * https://www.cnblogs.com/panchanggui/p/12275578.html
      *
      * @param accessToken    需要增强的 Token
      * @param authentication 在 Security 那里取得的 Authentication
@@ -35,7 +27,6 @@ public class RedisTokenEnhancer implements TokenEnhancer {
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         log.debug("返回的 Token 类型为： {}", accessToken.getTokenType());
-
         if (accessToken instanceof DefaultOAuth2AccessToken) {
             DefaultOAuth2AccessToken token = ((DefaultOAuth2AccessToken) accessToken);
             token.setValue(getNewToken());

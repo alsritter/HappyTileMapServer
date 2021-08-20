@@ -11,6 +11,7 @@ public enum GenderEnum implements IEnum<Integer> {
     WOMAN(0, "女");
 
     private final int value;
+
     private final String desc;
 
     GenderEnum(int value, String desc) {
@@ -27,4 +28,5 @@ public enum GenderEnum implements IEnum<Integer> {
     public String toString() {
         return this.desc;
     }
+
 }
