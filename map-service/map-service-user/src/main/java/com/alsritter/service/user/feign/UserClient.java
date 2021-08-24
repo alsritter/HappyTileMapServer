@@ -3,16 +3,21 @@ package com.alsritter.service.user.feign;
 import com.alsritter.common.api.ResultCode;
 import com.alsritter.common.exception.BusinessException;
 import com.alsritter.service.user.service.SecurityUserService;
+import com.alsritter.service.user.service.TbPermissionService;
 import com.alsritter.service.user.service.TbUserService;
 import com.alsritter.serviceapi.user.domain.SecurityUserDto;
 import com.alsritter.serviceapi.user.entity.TbUser;
 import com.alsritter.serviceapi.user.feign.IUserClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
+
 /**
+ * 这里只能使用 @RestController 注解，不能使用 @Component 注解
  * @author alsritter
  * @version 1.0
  **/
@@ -21,29 +26,35 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class UserClient implements IUserClient {
 
+    private final TbPermissionService permissionService;
     private final SecurityUserService securityUserService;
     private final TbUserService userService;
 
     @Override
-    public ResponseEntity<SecurityUserDto> userInfoById(Long userId) {
+    public SecurityUserDto userInfoById(Long userId) {
         log.info("查询的 ID 是{}", userId);
-        return ResponseEntity.ok(securityUserService.getUserInfoById(userId));
+        return securityUserService.getUserInfoById(userId);
     }
 
     @Override
-    public ResponseEntity<SecurityUserDto> userInfoByName(String username) {
+    public SecurityUserDto userInfoByName(String username) {
         log.info("查询的 username 是{}", username);
-        return ResponseEntity.ok(securityUserService.getUserInfoByName(username));
+        return securityUserService.getUserInfoByName(username);
     }
 
     @Override
-    public ResponseEntity<Boolean> addUser(TbUser user) {
+    public Boolean addUser(TbUser user) {
         try {
             userService.addUser(user);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new BusinessException(ResultCode.USER_INSERT_FAILED);
         }
-        return ResponseEntity.ok(true);
+        return true;
+    }
+
+    @Override
+    public Map<String, List<String>> getPermission() {
+        return permissionService.getPermission();
     }
 }

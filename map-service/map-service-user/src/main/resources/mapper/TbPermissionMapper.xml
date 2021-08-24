@@ -6,7 +6,7 @@
     </sql>
 
     <sql id="baseColumn">
-        id,parent_id,name,enname,url,description,created,updated
+        id,name,url,description,created,updated
     </sql>
 
 </mapper>

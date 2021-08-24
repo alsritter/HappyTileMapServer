@@ -1,6 +1,5 @@
 package com.alsritter.service.test2.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WebController {
 
-    @PreAuthorize("hasAnyAuthority('DELETE','QUERY')")
     @GetMapping("/test")
     public String securedResource(Authentication auth) {
         return "This is a SECURED resource. Authentication: " + auth.getName() + "; Authorities: " + auth.getAuthorities();

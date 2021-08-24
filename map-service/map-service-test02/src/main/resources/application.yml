@@ -4,52 +4,11 @@ server:
 spring:
   application:
     name: test-service
-
   cloud:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
 
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    # 连接超时时间（ms）
-    timeout: 10000
-    # Redis默认情况下有16个分片，这里配置具体使用的分片，默认是0
-    database: 0
-    lettuce:
-      pool:
-        # 连接池最大连接数（使用负值表示没有限制） 默认 8
-        max-active: 100
-        # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
-        max-wait: -1
-        # 连接池中的最大空闲连接 默认 8
-        max-idle: 8
-        # 连接池中的最小空闲连接 默认 0
-        min-idle: 0
-  #  # 注意：别忘了设置缓存用的是 redis
-  #  cache:
-  #    type: redis
-  #
-
-
-# 单独设置的
-security:
-  oauth2:
-    authorization:
-      # 当此服务端接收到来自客户端端的请求后，需要拿着请求中的 token 到认证服务端做 token 验证，就是请求的这个接口
-      check-token-access: http://localhost:9527/auth/oauth/check_token
-    client:
-      #  要和认证服务中的配置一致
-      client-id: webClient
-      client-secret: secret
-      # 授权码认证方式需要的
-      user-authorization-uri: http://localhost:9527/auth/oauth/authorize
-      # 密码模式需要用到的获取 token 的接口
-      access-token-uri: http://localhost:9527/auth/oauth/token
-    resource:
-      id: test-service
-      user-info-uri: test-service
 management:
   endpoints:
     web:

@@ -2,7 +2,6 @@ package com.alsritter.oauth2_2.exception;
 
 import com.alsritter.common.api.CommonResult;
 import com.alsritter.common.exception.BusinessException;
-import com.baomidou.mybatisplus.extension.api.R;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;

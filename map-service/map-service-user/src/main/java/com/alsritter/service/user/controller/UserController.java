@@ -1,6 +1,7 @@
 package com.alsritter.service.user.controller;
 
 import com.alsritter.common.api.CommonResult;
+import com.alsritter.service.user.service.TbPermissionService;
 import com.alsritter.service.user.service.TbUserService;
 import com.alsritter.serviceapi.user.entity.TbUser;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author alsritter
@@ -21,8 +24,9 @@ import javax.validation.Valid;
 public class UserController {
 
     private final TbUserService userService;
+    private final TbPermissionService permissionService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<TbUser> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }

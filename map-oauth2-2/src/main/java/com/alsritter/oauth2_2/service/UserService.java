@@ -69,27 +69,23 @@ public class UserService implements UserDetailsService {
 
     public SecurityUser getUserByName(String username) {
         // 这里需要检查返回值
-        ResponseEntity<SecurityUserDto> data = null;
+        SecurityUserDto body = null;
 
         try {
             // feign.codec.DecodeException 异常多半是因为构造的 Result对象没有 空的构造器
-            data = userClient.userInfoByName(username);
+            body = userClient.userInfoByName(username);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (data == null ||
-                data.getStatusCode().isError() ||
-                Objects.requireNonNull(data.getBody()).getUser() == null)
+        if (Objects.requireNonNull(body).getUser() == null)
             throw new UsernameNotFoundException(ResultCode.USERNAME_PASSWORD_ERROR.getMessage());
-
-        SecurityUserDto body = data.getBody();
 
         // 将从 feign 取得的数据构造成 SecurityUser
         SecurityUser securityUser = new SecurityUser();
         securityUser.setUserAccount(body.getUser().getUsername());
         securityUser.setUserPassword(body.getUser().getPassword());
-        securityUser.setPermissions(body.getPermission().stream()
+        securityUser.setPermissions(body.getRoles().stream()
                 .map(x -> new SimpleGrantedAuthority(x.getEnname())).collect(Collectors.toList()));
 
         return securityUser;
@@ -124,7 +120,6 @@ public class UserService implements UserDetailsService {
         ruser.setPhone(user.getPhone());
 
         return Optional.ofNullable(userClient.addUser(ruser))
-                .map(HttpEntity::getBody)
                 .orElse(false);
     }
 }

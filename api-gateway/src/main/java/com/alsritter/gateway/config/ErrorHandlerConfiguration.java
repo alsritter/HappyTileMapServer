@@ -1,6 +1,6 @@
 package com.alsritter.gateway.config;
 
-import com.alsritter.gateway.handler.JsonExceptionHandler;
+import com.alsritter.gateway.component.JsonExceptionHandler;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * 使用自定义的结构体返回，code、message、data
+ *
  * @author alsritter
  * @version 1.0
  **/

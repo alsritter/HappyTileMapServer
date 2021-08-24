@@ -1,5 +1,6 @@
 package com.alsritter.service.user.mapper;
 
+import com.alsritter.serviceapi.user.domain.UrlAndNameDo;
 import com.alsritter.serviceapi.user.entity.TbPermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -34,4 +35,10 @@ public interface TbPermissionMapper extends BaseMapper<TbPermission> {
             "    )\n" +
             ");")
     List<TbPermission> findPermissionsByUserId(long userId);
+
+    @Select("SELECT url, enname\n" +
+            "FROM tb_role_permission trp\n" +
+            "         JOIN tb_permission tp ON tp.id = trp.permission_id\n" +
+            "         JOIN tb_role tr ON tr.id = trp.role_id;")
+    List<UrlAndNameDo> getAllPermissions();
 }

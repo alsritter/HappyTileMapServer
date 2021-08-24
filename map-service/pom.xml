@@ -13,8 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>map-service-user</module>
-        <module>map-service-test</module>
-        <module>map-service-websocket</module>
         <module>map-service-forum</module>
         <module>map-service-test02</module>
     </modules>
