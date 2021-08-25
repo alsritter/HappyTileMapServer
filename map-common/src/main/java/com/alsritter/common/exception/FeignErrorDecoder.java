@@ -1,8 +1,6 @@
 package com.alsritter.common.exception;
 
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
-import com.alsritter.common.api.CommonResult;
 import com.alsritter.common.api.ResultCode;
 import feign.FeignException;
 import feign.Response;
@@ -46,14 +44,20 @@ public class FeignErrorDecoder extends ErrorDecoder.Default {
                 //
                 // // 将异常信息，转换为 CommonResult 对象
                 // CommonResult exceptionInfo = JSONUtil.toBean(bodyText, CommonResult.class);
-                // 如果 exception 中 code 不为空，则使用该 code，否则使用默认的错误code
+                // 如果 exception 中 code 不为空，则使用该 code，否则使用默认的错误 code
                 Integer code = Optional
-                        .ofNullable(jsonObject.getInt("status"))
-                        .orElse(ResultCode.FAILED.getCode());
+                        .ofNullable(jsonObject.getInt("code"))
+                        .orElse(
+                                Optional.ofNullable(jsonObject.getInt("status"))
+                                        .orElse(ResultCode.FAILED.getCode()));
                 // 如果 exception 中 message 不为空，则使用该 message，否则使用默认的错误message
                 String message = Optional
-                        .ofNullable(jsonObject.getStr("error"))
-                        .orElse(ResultCode.FAILED.getMessage());
+                        .ofNullable(jsonObject.getStr("message"))
+                        .orElse(
+                                Optional.ofNullable(jsonObject.getStr("error"))
+                                        .orElse(ResultCode.FAILED.getMessage())
+
+                        );
 
                 return new BusinessException(code, message);
             }

@@ -1,4 +1,4 @@
-package com.alsritter.oauth2_2.exception;
+package com.alsritter.service.forum.exception;
 
 import com.alsritter.common.api.CommonResult;
 import com.alsritter.common.api.ResultCode;
@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 
 /**
- * 全局处理 Oauth2 抛出的异常
- * 因为 Feign，所以错误要抛状态码
+ * 全局处理抛出的异常
  *
  * @author alsritter
  * @version 1.0

@@ -9,6 +9,6 @@ package com.alsritter.service.user.service;
  * @since 2021-06-05 17:00:11
  */
 public interface TbRoleService {
-
-
+    void setRole(long userId, long roleId);
+    void setDefaultRole(long userId);
 }

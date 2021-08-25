@@ -35,6 +35,14 @@ public class BusinessException extends RuntimeException {
     /**
      * 构造函数
      */
+    public BusinessException(ResultCode resultCode, String message) {
+        super(message);
+        this.resultCode = resultCode.getCode();
+    }
+
+    /**
+     * 构造函数
+     */
     public BusinessException(int resultCode, String message) {
         super(message);
         this.resultCode = resultCode;
@@ -57,6 +65,17 @@ public class BusinessException extends RuntimeException {
     public BusinessException(String message, ResultCode resultCode, Throwable cause) {
         super(message, cause);
         this.resultCode = resultCode.getCode();
+    }
+
+    /**
+     * 构造函数
+     *
+     * @param message 异常信息
+     * @param cause   异常链
+     */
+    public BusinessException(String message, Throwable cause) {
+        super(message, cause);
+        this.resultCode = ResultCode.FAILED.getCode();
     }
 
     /**

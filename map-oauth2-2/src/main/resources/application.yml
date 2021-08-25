@@ -1,5 +1,5 @@
 server:
-  port: 38094
+  port: 16666
 
 spring:
   application:
@@ -38,7 +38,11 @@ logging:
   level:
     com.alsritter: debug
 
-myfeign:
-  security:
-    client-id: interiorClient
-    client-secret: secret
+myremote:
+  client:
+    interior:
+      client-id: interiorClient
+      client-secret: secret
+    web:
+      client-id: webClient
+      client-secret: secret

@@ -3,22 +3,21 @@
     {
       "name": "myremote.client.interior.client-id",
       "type": "java.lang.String",
-      "description": "内部调用 client-id."
+      "description": "Description for myremote.client.interior.client-id."
     },
     {
       "name": "myremote.client.interior.client-secret",
       "type": "java.lang.String",
-      "description": "内部调用 client-secret."
+      "description": "Description for myremote.client.interior.client-secret."
     },
     {
       "name": "myremote.client.web.client-id",
       "type": "java.lang.String",
-      "description": "外部 client-id."
+      "description": "Description for myremote.client.web.client-id."
     },
     {
       "name": "myremote.client.web.client-secret",
       "type": "java.lang.String",
-      "description": "外部 client-secret."
+      "description": "Description for myremote.client.web.client-secret."
     }
-  ]
-}
+  ] }

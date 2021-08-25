@@ -148,6 +148,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/oauth/**").permitAll() // 放行 /oauth/token
                 .antMatchers("/permission/refresh").permitAll()
+                .antMatchers("/handler/**").permitAll() // 取得验证码等操作
                 .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/**/api-docs").permitAll() // 放行swagger
                 .antMatchers(
                         "/**/*.js",

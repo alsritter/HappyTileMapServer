@@ -14,7 +14,8 @@ public enum ResultCode implements IErrorCode {
 
     VALIDATE_FAILED(30001, "参数检验失败"),
     BIND_EXCEPTION(30002, "参数绑定错误"),
-    METHOD_ARGUMENT_NOT_VALID_EXCEPTION(30003, "请求参数错误"),
+    REQUEST_PARAMETER_ERROR(30003, "请求参数错误"),
+    CAPTCHA_EXCEPTION(30004, "验证码错误"),
 
     USER_EXIST_EXCEPTION(35001, "存在相同的用户"),
     PHONE_EXIST_EXCEPTION(35002, "存在相同的手机号"),
@@ -38,7 +39,8 @@ public enum ResultCode implements IErrorCode {
     SMS_CODE_EXCEPTION(50003, "验证码获取频率太高，请稍后再试"),
     FEIGN_EXCEPTION(50004, "远距离调用错误"),
 
-    USER_INSERT_FAILED(60001, "用户插入失败");
+    USER_INSERT_FAILED(60001, "用户插入失败"),
+    SET_ROLE_FAILED(60002, "设置权限失败");
 
 
 

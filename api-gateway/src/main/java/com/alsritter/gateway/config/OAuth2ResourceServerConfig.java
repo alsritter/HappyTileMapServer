@@ -1,12 +1,13 @@
 package com.alsritter.gateway.config;
 
 import cn.hutool.core.util.ArrayUtil;
+import com.alsritter.gateway.component.MyNimbusReactiveOpaqueTokenIntrospector;
 import com.alsritter.gateway.component.RestAuthenticationEntryPoint;
 import com.alsritter.gateway.component.RestfulAccessDeniedHandler;
-import com.alsritter.gateway.component.MyNimbusReactiveOpaqueTokenIntrospector;
 import com.alsritter.gateway.filter.IgnoreUrlsRemoveJwtFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -17,6 +18,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.util.pattern.PathPatternParser;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * @author alsritter
@@ -35,6 +39,8 @@ public class OAuth2ResourceServerConfig {
     private final IgnoreUrlsRemoveJwtFilter ignoreUrlsRemoveJwtFilter;
     private final SecureProperties.TokenConfig tokenConfig;
 
+    @Value("${server.port}")
+    private int port;
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
@@ -46,12 +52,15 @@ public class OAuth2ResourceServerConfig {
 
         http.addFilterAt(corsFilter(), SecurityWebFiltersOrder.CORS);
 
+        String checkTokenEndpointUrl = getUrl() + tokenConfig.getCheckTokenEndpointUrl();
+        log.debug("token 检查地址为 {}", checkTokenEndpointUrl);
+
         http.oauth2ResourceServer().opaqueToken()
                 .introspectionClientCredentials(tokenConfig.getClientId(), tokenConfig.getClientSecret())
                 .introspectionUri(tokenConfig.getCheckTokenEndpointUrl())
                 // 要自己写一个不透明 Token 转换器
                 .introspector(new MyNimbusReactiveOpaqueTokenIntrospector(
-                        tokenConfig.getCheckTokenEndpointUrl(), tokenConfig.getClientId(), tokenConfig.getClientSecret()));
+                        checkTokenEndpointUrl, tokenConfig.getClientId(), tokenConfig.getClientSecret()));
 
         //自定义处理请求头过期或签名错误的结果
         http.oauth2ResourceServer().authenticationEntryPoint(restAuthenticationEntryPoint);
@@ -65,6 +74,17 @@ public class OAuth2ResourceServerConfig {
                 .authenticationEntryPoint(restAuthenticationEntryPoint)//处理未认证
                 .and().csrf().disable();
         return http.build();
+    }
+
+    public String getUrl() {
+        String address = null;
+        try {
+            InetAddress host = InetAddress.getLocalHost();
+            address = host.getHostAddress();
+        } catch (UnknownHostException e) {
+            address = "127.0.0.1";
+        }
+        return "http://" + address + ":" + this.port;
     }
 
     // @Bean

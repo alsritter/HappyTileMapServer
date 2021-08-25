@@ -1,4 +1,4 @@
-package com.alsritter.oauth2_2.exception;
+package com.alsritter.service.user.exception;
 
 import com.alsritter.common.api.CommonResult;
 import com.alsritter.common.api.ResultCode;

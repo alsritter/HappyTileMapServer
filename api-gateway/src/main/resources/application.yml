@@ -1,5 +1,5 @@
 server:
-  port: 9527
+  port: 19999
 
 management:
   endpoints:
@@ -64,9 +64,11 @@ spring:
           filters:
             - StripPrefix=1
         - id: forum
-          uri: lb://map-service-forum
+          uri: lb://forum-service
           predicates:
             - Path=/forum/**
+          filters:
+            - StripPrefix=1
 
 
 secure:
@@ -74,8 +76,13 @@ secure:
     client-id: webClient
     client-secret: secret
 #    位置 org.springframework.security.oauth2.provider.endpoint
-    check-token-endpoint-url: http://localhost:9527/auth/oauth/check_token
+    # 这里完整的地址是 http://127.0.0.1:19999/auth/oauth/check_token 就是自己
+    check-token-endpoint-url: /auth/oauth/check_token
   ignore:
     urls: #配置白名单路径
       - "/auth/**"
-      - "/refresh/permissions"
+      - "/forum/auth/**"
+
+logging:
+  level:
+    com.alsritter: debug

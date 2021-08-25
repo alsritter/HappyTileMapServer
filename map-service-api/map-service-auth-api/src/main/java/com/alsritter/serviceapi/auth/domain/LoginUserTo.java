@@ -1,4 +1,4 @@
-package com.alsritter.oauth2_2.domain;
+package com.alsritter.serviceapi.auth.domain;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,49 +10,56 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
- * 前端传过来的用户注册信息
- *
  * @author alsritter
  * @version 1.0
  **/
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(description = "用户注册")
-public class RegisterUserTo {
+@ApiModel(description = "用户登陆")
+public class LoginUserTo {
+    /**
+     * 登陆类型
+     */
+    @NotBlank
+    @ApiModelProperty(value = "登陆类型")
+    private String type;
+
     /**
      * 用户名
      */
-    @NotBlank
     @ApiModelProperty(value = "用户名")
     private String username;
+
     /**
      * 密码，加密存储
      */
-    @NotBlank
     @ApiModelProperty(value = "密码，加密存储")
     private String password;
+
     /**
-     * 注册手机号
+     * 手机号登陆
      */
-    @ApiModelProperty(value = "注册手机号")
+    @ApiModelProperty(value = "手机号")
     @Pattern(regexp = "^1(3|4|5|7|8)\\d{9}$", message = "手机号码格式错误")
     private String phone;
+
     /**
-     * 注册邮箱
+     * 邮箱登陆
      */
-    @ApiModelProperty(value = "注册邮箱")
+    @ApiModelProperty(value = "邮箱")
     @Email(message = "邮箱格式错误")
     private String email;
+
     /**
-     * 头像地址
+     * 手机或者邮箱验证码
      */
-    @Pattern(regexp = "(ht|f)tp(s?)\\:\\/\\/[0-9a-zA-Z]([-.\\w]*[0-9a-zA-Z])*(:(0-9)*)*(\\/?)([a-zA-Z0-9\\-\\.\\?\\,\\'\\/\\\\&%\\+\\$#_=]*)?",
-            message = "头像地址错误")
-    @ApiModelProperty(value = "头像地址")
-    private String avatar;
+    @ApiModelProperty(value = "手机或者邮箱验证码")
+    private String code;
+
     /**
-     * 个人信息
+     * 验证码
      */
-    @ApiModelProperty(value = "个人信息")
-    private String description;
+    @ApiModelProperty(value = "验证码")
+    @NotBlank
+    private String captcha;
 }
