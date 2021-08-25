@@ -34,7 +34,7 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
-  typeAliasesPackage: com.alsritter.service.forum.entity
+  typeAliasesPackage: com.alsritter.serviceapi.forum.entity
   global-config:
     db-config:
       id-type: id_worker

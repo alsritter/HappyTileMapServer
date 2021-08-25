@@ -37,3 +37,8 @@ spring:
 logging:
   level:
     com.alsritter: debug
+
+myfeign:
+  security:
+    client-id: interiorClient
+    client-secret: secret

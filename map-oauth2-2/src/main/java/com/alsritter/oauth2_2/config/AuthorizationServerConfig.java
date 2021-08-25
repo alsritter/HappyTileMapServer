@@ -4,6 +4,7 @@ import com.alsritter.oauth2_2.service.UserService;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -11,6 +12,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
 @Configuration
@@ -44,6 +46,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints
                 .tokenServices(redisTokenServices)
                 .userDetailsService(userService);
+
+        // 就是下面配置的 inMemory 对应的工具类为 InMemoryClientDetailsService
+        // endpoints.setClientDetailsService()
     }
 
 
@@ -56,17 +61,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients.inMemory()
                 .withClient("webClient")                         // 配置 client_id
                 .secret(passwordEncoder.encode("secret"))    // 配置 client_secret
-                .scopes("all")                                          // 配置申请的权限范围，此处的 scopes 是无用的，可以随意设置
+                .scopes("web")                                          // 配置申请的权限范围，此处的 scopes 是无用的，可以随意设置
                 .authorizedGrantTypes("password", "refresh_token")      // grant_type 表示授权类型, 密码模式 password
                 .accessTokenValiditySeconds(3600)                       // Access Token (访问 Token)的有效期
-                .refreshTokenValiditySeconds(86400);                    // Refresh Token (刷新 token) 的有效期 (24 小时)
-
-                // .and()//授权的 Client_id 应该和验证的 Client_id 一样
-                // .withClient("test")
-                // .scopes(passwordEncoder.encode("secret"))
-                // // 别忘了加这个，否则会无法认证
-                // .authorizedGrantTypes("password", "refresh_token")      // grant_type 表示授权类型, 密码模式 password
-                // .scopes("all");
+                .refreshTokenValiditySeconds(86400)                     // Refresh Token (刷新 token) 的有效期 (24 小时)
+                .and()
+                .withClient("interiorClient")
+                .secret(passwordEncoder.encode("secret"))
+                // 客户端凭证验证在 ClientCredentialsTokenEndpointFilter 里面
+                .authorizedGrantTypes("client_credentials", "refresh_token")             // 使用凭证式认证
+                // ClientDetailsUserDetailsService 就是默认的客户端凭证 UserDetailsService
+                .scopes("all");
     }
 
 }

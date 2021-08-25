@@ -30,6 +30,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
+ * 总结：就是在这里生成 Token 的
+ *
+ *
  * SpringSecurity 默认有 Form登录和 Basic登录，在 WebSecurityConfigurerAdapter 类的 configure 方法上面设置了 http.formLogin() 也就是表单登录，
  * 也就是这里的用户名密码登录，默认情况下 SpringSecurity 已经实现了表单登录的封装了，所以只要设置成功之后返回的 Token 就好，
  * 创建一个继承 SavedRequestAwareAuthenticationSuccessHandler 的 CustomAuthenticationSuccessHandler类，代码如下：

@@ -5,6 +5,6 @@ spring:
   application:
     name: map-service-forum
   profiles:
-    active: dev,db,map-auth
+    active: dev,db
 
 

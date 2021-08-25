@@ -21,6 +21,9 @@ import java.util.stream.Collectors;
 /**
  * 鉴权管理器，用于判断是否有资源的访问权限
  *
+ * 注意：Zuul 网关导致请求头信息丢失的解决办法
+ * https://blog.csdn.net/czx2018/article/details/105618223
+ *
  * @author alsritter
  * @version 1.0
  **/
@@ -55,11 +58,12 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
                 //     return authority;
                 // })
                 // .any(o -> {
-                //     boolean contains = authorities.contains(o);
+                //     boolean contains = "SCOPE_ALL".equals(o) || authorities.contains(o);
                 //     System.out.println(contains);
                 //     return contains;
                 // })
-                .any(authorities::contains)
+                .any(o -> "SCOPE_ALL".equals(o) || authorities.contains(AuthConstant.AUTHORITY_PREFIX +  o))
+                // .any(authorities::contains)
                 .map(AuthorizationDecision::new)
                 .defaultIfEmpty(new AuthorizationDecision(false));
     }

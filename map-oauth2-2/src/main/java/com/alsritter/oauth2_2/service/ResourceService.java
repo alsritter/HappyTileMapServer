@@ -1,6 +1,5 @@
 package com.alsritter.oauth2_2.service;
 
-import cn.hutool.core.collection.CollUtil;
 import com.alsritter.common.RedisConstant;
 import com.alsritter.serviceapi.user.feign.IUserClient;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +7,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

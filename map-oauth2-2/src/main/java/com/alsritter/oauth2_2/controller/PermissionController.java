@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +34,7 @@ public class PermissionController {
     private final RedisTemplate<String, Object> redisTemplate;
     private final IUserClient permissionsClient;
 
+    @PostMapping("/refresh")
     public ResponseEntity<CommonResult<String>> refreshPermission() {
         // 先清空原本 Redis 里面的数据
         redisTemplate.delete(RedisConstant.RESOURCE_ROLES_MAP);

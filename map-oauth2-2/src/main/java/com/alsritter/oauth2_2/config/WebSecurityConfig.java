@@ -18,7 +18,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.web.filter.CorsFilter;
 
 /**
@@ -81,11 +80,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     AuthenticationProcessingFilter authenticationProcessingFilter(AuthenticationManager authenticationManager) {
         AuthenticationProcessingFilter userPasswordAuthenticationProcessingFilter = new AuthenticationProcessingFilter();
-        //为filter设置管理器
+        // 为 filter 设置管理器
         userPasswordAuthenticationProcessingFilter.setAuthenticationManager(authenticationManager);
-        //登录成功后通过端点生成令牌
+        // 登录成功后通过端点生成令牌
         userPasswordAuthenticationProcessingFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
-        //登录失败后跳转
+        // 登录失败后跳转
         userPasswordAuthenticationProcessingFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler);
         return userPasswordAuthenticationProcessingFilter;
     }
@@ -148,6 +147,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/oauth/**").permitAll() // 放行 /oauth/token
+                .antMatchers("/permission/refresh").permitAll()
                 .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/**/api-docs").permitAll() // 放行swagger
                 .antMatchers(
                         "/**/*.js",

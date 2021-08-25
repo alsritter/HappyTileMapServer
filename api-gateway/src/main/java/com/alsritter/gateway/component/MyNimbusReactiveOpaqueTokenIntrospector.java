@@ -127,22 +127,41 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
         Map<String, Object> claims = response.toJSONObject();
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         List<String> audiences = new ArrayList<>();
-        List<Audience> pasAudiences = null;
-        try {
-            JSONObject parameters = response.getParameters();
-            pasAudiences = Audience.create(JSONObjectUtils.getStringList(parameters , "authorities"));
-        } catch (ParseException e) {
-            pasAudiences = Collections.emptyList();
-        }
+        JSONObject parameters = response.getParameters();
 
-        if (!pasAudiences.isEmpty()) {
-            for (Audience audience : pasAudiences) {
-                authorities.add(new SimpleGrantedAuthority(audience.getValue()));
-                audiences.add(audience.getValue());
+        if (!claims.containsKey("user_name")) {
+            List<String> scopes = null;
+            try {
+                scopes = JSONObjectUtils.getStringList(parameters, "scope");
+            } catch (ParseException e) {
+                scopes = Collections.emptyList();
             }
 
-            claims.put(AUDIENCE, Collections.unmodifiableList(audiences));
+            if (!scopes.isEmpty()) {
+                for (String scope : scopes) {
+                    String authorityPrefix = "SCOPE_";
+                    authorities.add(new SimpleGrantedAuthority(authorityPrefix + scope.toUpperCase(Locale.ROOT)));
+                }
+                claims.put(SCOPE, scopes);
+            }
+        } else {
+            List<Audience> pasAudiences = null;
+            try {
+                pasAudiences = Audience.create(JSONObjectUtils.getStringList(parameters , "authorities"));
+            } catch (ParseException e) {
+                pasAudiences = Collections.emptyList();
+            }
+
+            if (!pasAudiences.isEmpty()) {
+                for (Audience audience : pasAudiences) {
+                    authorities.add(new SimpleGrantedAuthority(audience.getValue()));
+                    audiences.add(audience.getValue());
+                }
+
+                claims.put(AUDIENCE, Collections.unmodifiableList(audiences));
+            }
         }
+
 
         if (response.getClientID() != null) {
             claims.put(CLIENT_ID, response.getClientID().getValue());
@@ -161,15 +180,8 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
         if (response.getNotBeforeTime() != null) {
             claims.put(NOT_BEFORE, response.getNotBeforeTime().toInstant());
         }
-        // if (response.getScope() != null) {
-        //     List<String> scopes = Collections.unmodifiableList(response.getScope().toStringList());
-        //     claims.put(SCOPE, scopes);
-        //
-        //     for (String scope : scopes) {
-        //         String authorityPrefix = "SCOPE_";
-        //         authorities.add(new SimpleGrantedAuthority(authorityPrefix + scope));
-        //     }
-        // }
+
+
 
         return new DefaultOAuth2AuthenticatedPrincipal(claims, authorities);
     }

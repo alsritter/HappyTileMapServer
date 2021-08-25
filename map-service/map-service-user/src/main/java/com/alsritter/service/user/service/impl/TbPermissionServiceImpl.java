@@ -33,10 +33,10 @@ public class TbPermissionServiceImpl extends ServiceImpl<TbPermissionMapper, TbP
         List<UrlAndNameDo> permissions = permissionMapper.getAllPermissions();
 
         return permissions.stream()
-                .collect(Collectors.groupingBy( UrlAndNameDo::getEnname)).entrySet().stream()
+                .collect(Collectors.groupingBy( UrlAndNameDo::getUrl)).entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        e -> e.getValue().stream().map(UrlAndNameDo::getUrl).collect(Collectors.toList())
+                        e -> e.getValue().stream().map(UrlAndNameDo::getEnname).collect(Collectors.toList())
                 ));
     }
 }

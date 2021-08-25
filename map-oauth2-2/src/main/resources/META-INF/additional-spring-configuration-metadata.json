@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "myfeign.security.client-id",
+      "type": "java.lang.String",
+      "description": "client id."
+    },
+    {
+      "name": "myfeign.security.client-secret",
+      "type": "java.lang.String",
+      "description": "client secret."
+    }
+  ] }

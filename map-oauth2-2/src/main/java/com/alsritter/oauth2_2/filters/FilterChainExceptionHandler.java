@@ -2,6 +2,7 @@ package com.alsritter.oauth2_2.filters;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -39,6 +40,10 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
+            // // 如果是身份验证失败
+            // if (e instanceof InsufficientAuthenticationException) {
+            //     // TODO: 这里需要重新验证
+            // }
             resolver.resolveException(request, response, null, e);
         }
     }

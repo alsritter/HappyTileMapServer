@@ -1,4 +1,4 @@
-package com.alsritter.service.forum.entity;
+package com.alsritter.serviceapi.forum.entity;
 
 import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.IdType;

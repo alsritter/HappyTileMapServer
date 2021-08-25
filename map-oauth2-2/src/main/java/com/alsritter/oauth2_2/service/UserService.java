@@ -1,15 +1,13 @@
 package com.alsritter.oauth2_2.service;
 
 import com.alsritter.common.api.ResultCode;
-import com.alsritter.oauth2_2.domain.RegisterUserTo;
 import com.alsritter.common.token.SecurityUser;
+import com.alsritter.oauth2_2.domain.RegisterUserTo;
 import com.alsritter.serviceapi.user.domain.SecurityUserDto;
 import com.alsritter.serviceapi.user.entity.TbUser;
 import com.alsritter.serviceapi.user.feign.IUserClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;

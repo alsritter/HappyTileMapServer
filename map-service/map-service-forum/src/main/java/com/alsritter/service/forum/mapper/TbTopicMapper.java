@@ -1,6 +1,6 @@
 package com.alsritter.service.forum.mapper;
 
-import com.alsritter.service.forum.entity.TbTopic;
+import com.alsritter.serviceapi.forum.entity.TbTopic;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

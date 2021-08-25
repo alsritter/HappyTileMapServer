@@ -1,4 +1,4 @@
-package com.alsritter.service.forum.entity;
+package com.alsritter.serviceapi.forum.entity;
 
 import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
- * 主题表（或者说是文章）(tb_topic)实体类
+ * 评论表(tb_comment)实体类
  *
  * @author alsritter
  * @since 2021-08-15 11:30:49
@@ -20,43 +20,27 @@ import lombok.experimental.Accessors;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-@TableName("tb_topic")
-public class TbTopic extends Model<TbTopic> implements Serializable {
+@TableName("tb_comment")
+public class TbComment extends Model<TbComment> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * topicId
+     * 评论id
      */
     @TableId(type = IdType.AUTO)
-	private Long topicId;
+	private Long commentId;
     /**
-     * 主题作者
+     * 评论所在楼
+     */
+    private Integer floor;
+    /**
+     * 评论的人
      */
     private Long userId;
-    /**
-     * 标签
-     */
-    private String tag;
-    /**
-     * 0-正常，1-置顶，2-不可用
-     */
-    private Integer status;
-    /**
-     * 文章标题
-     */
-    private String title;
     /**
      * 内容
      */
     private String content;
-    /**
-     * 文章浏览量
-     */
-    private Long browsed;
-    /**
-     * 点赞数
-     */
-    private Long prefer;
     /**
      * createTime
      */
