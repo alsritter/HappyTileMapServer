@@ -37,6 +37,18 @@
             </exclusions>
         </dependency>
 
+        <!--邮件服务-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <!--用于邮件模板-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.alsritter</groupId>
             <artifactId>map-common</artifactId>

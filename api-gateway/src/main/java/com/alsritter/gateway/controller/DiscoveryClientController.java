@@ -39,6 +39,5 @@ public class DiscoveryClientController {
         });
         return instances;
     }
-
 }
 

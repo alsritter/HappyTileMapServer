@@ -2,6 +2,7 @@ package com.alsritter.service.user.service;
 
 
 import com.alsritter.serviceapi.user.entity.TbUser;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * 用户表服务接口
@@ -13,4 +14,14 @@ import com.alsritter.serviceapi.user.entity.TbUser;
 public interface TbUserService {
     TbUser getUserById(long id);
     void addUser(TbUser user);
+
+    /**
+     * 检查是否存在这个 Email
+     */
+    boolean testEmailExist(String email);
+
+    /**
+     * 检查是否存在这个 Phone
+     */
+    boolean testPhoneExist(String phone);
 }

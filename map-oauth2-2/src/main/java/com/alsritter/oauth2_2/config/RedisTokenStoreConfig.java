@@ -1,5 +1,6 @@
 package com.alsritter.oauth2_2.config;
 
+import com.alsritter.oauth2_2.component.MyRemoteCallProperties;
 import com.alsritter.oauth2_2.component.RedisTokenEnhancer;
 import lombok.AllArgsConstructor;
 import lombok.val;
@@ -28,6 +29,7 @@ public class RedisTokenStoreConfig {
      */
     private final RedisConnectionFactory redisConnectionFactory;
     private final RedisTokenEnhancer redisTokenEnhancer;
+    private final MyRemoteCallProperties.ClientWeb remoteCallProperties;
 
     @Bean
     public TokenStore redisTokenStore() {
@@ -61,8 +63,10 @@ public class RedisTokenStoreConfig {
         defaultTokenServices.setTokenEnhancer(enhancerChain);       // 这个很重要
 
         // 访问令牌的默认有效性（以秒为单位）。 非过期令牌为零或负数。 如果设置了客户端详细信息服务，则将从客户端读取有效期，如果客户端未定义，则默认为该值。
-        defaultTokenServices.setAccessTokenValiditySeconds(43200);  // 令牌有效期12小时
-        defaultTokenServices.setRefreshTokenValiditySeconds(259200);// 刷新令牌有效期3天
+        // TODO 如果设置了 ClientDetailsService 这个配置无效
+        defaultTokenServices.setAccessTokenValiditySeconds(remoteCallProperties.getAccessTokenValiditySeconds());
+        defaultTokenServices.setRefreshTokenValiditySeconds(remoteCallProperties.getRefreshTokenValiditySeconds());
+
         return defaultTokenServices;
     }
 

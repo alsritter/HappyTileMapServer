@@ -1,5 +1,6 @@
 package com.alsritter.oauth2_2.config;
 
+import com.alsritter.oauth2_2.component.MyRemoteCallProperties;
 import com.alsritter.oauth2_2.service.UserService;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private PasswordEncoder passwordEncoder;
     private UserService userService;
+    private MyRemoteCallProperties.ClientWeb remoteCallProperties;
 
     @Qualifier("redisTokenServices")
     private AuthorizationServerTokenServices redisTokenServices;
@@ -58,13 +60,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+
+        Integer accessTokenValiditySeconds = remoteCallProperties.getAccessTokenValiditySeconds();
+        Integer refreshTokenValiditySeconds = remoteCallProperties.getRefreshTokenValiditySeconds();
+
         clients.inMemory()
                 .withClient("webClient")                         // 配置 client_id
                 .secret(passwordEncoder.encode("secret"))    // 配置 client_secret
                 .scopes("web")                                          // 配置申请的权限范围，此处的 scopes 是无用的，可以随意设置
                 .authorizedGrantTypes("password", "refresh_token")      // grant_type 表示授权类型, 密码模式 password
-                .accessTokenValiditySeconds(3600)                       // Access Token (访问 Token)的有效期
-                .refreshTokenValiditySeconds(86400)                     // Refresh Token (刷新 token) 的有效期 (24 小时)
+                // Spring Security OAuth2 not using token expire values from properties
+                // https://stackoverflow.com/questions/47292961/spring-security-oauth2-not-using-token-expire-values-from-properties/51784859
+                .accessTokenValiditySeconds(accessTokenValiditySeconds)
+                .refreshTokenValiditySeconds(refreshTokenValiditySeconds)
+
                 .and()
                 .withClient("interiorClient")
                 .secret(passwordEncoder.encode("secret"))

@@ -98,6 +98,16 @@ public class BusinessException extends RuntimeException {
         this.resultCode = resultCode.getCode();
     }
 
+    /**
+     * 构造函数
+     *
+     * @param cause 异常链
+     */
+    public BusinessException(Throwable cause) {
+        super(cause);
+        this.resultCode = 500;
+    }
+
 
     public int getErrorCode() {
         return this.resultCode;

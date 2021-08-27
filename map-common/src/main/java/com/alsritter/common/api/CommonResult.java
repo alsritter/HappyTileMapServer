@@ -118,6 +118,15 @@ public class CommonResult<T> {
         return new CommonResult<>(ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMessage(), data);
     }
 
+
+    /**
+     * 认证过期
+     */
+    public static <T> CommonResult<T> accountExpired(T data) {
+        return new CommonResult<>(ResultCode.ACCOUNT_EXPIRED.getCode(), ResultCode.ACCOUNT_EXPIRED.getMessage(), data);
+    }
+
+
     /**
      * 未授权返回结果
      */

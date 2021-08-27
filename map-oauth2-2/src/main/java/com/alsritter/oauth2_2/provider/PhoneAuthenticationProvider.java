@@ -1,5 +1,6 @@
 package com.alsritter.oauth2_2.provider;
 
+import com.alsritter.common.exception.BusinessException;
 import com.alsritter.common.token.PhoneAuthenticationToken;
 import com.alsritter.common.token.SecurityUser;
 import com.alsritter.oauth2_2.service.UserService;
@@ -34,6 +35,12 @@ public class PhoneAuthenticationProvider implements AuthenticationProvider, Prov
         String code = request.getParameter("code");
 
         String realCode = (String) request.getSession().getAttribute("phoneCode");
+        Object timeout = request.getSession().getAttribute("phoneCodeTimeout");
+
+        if (timeout == null || Long.parseLong(timeout.toString()) < System.currentTimeMillis()) {
+            throw new BusinessException("请重新发送验证码");
+        }
+
         return new PhoneAuthenticationToken(phone, code, realCode);
     }
 

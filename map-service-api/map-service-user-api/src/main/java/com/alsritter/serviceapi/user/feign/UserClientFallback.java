@@ -18,12 +18,21 @@ public class UserClientFallback implements IUserClient {
 
     @Override
     public SecurityUserDto userInfoById(Long userId) {
-        // "未获取到账号信息"
         throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
     }
 
     @Override
     public SecurityUserDto userInfoByName(String username) {
+        throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
+    }
+
+    @Override
+    public SecurityUserDto userInfoByEmail(String email) {
+        throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
+    }
+
+    @Override
+    public SecurityUserDto userInfoByPhone(String phone) {
         throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
     }
 
@@ -34,6 +43,16 @@ public class UserClientFallback implements IUserClient {
 
     @Override
     public Map<String, List<String>> getPermission() {
+        throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
+    }
+
+    @Override
+    public boolean testEmailExist(String email) {
+        throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
+    }
+
+    @Override
+    public boolean testPhoneExist(String phone) {
         throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
     }
 }

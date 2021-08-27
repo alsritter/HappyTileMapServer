@@ -43,6 +43,18 @@ public class UserClient implements IUserClient {
     }
 
     @Override
+    public SecurityUserDto userInfoByEmail(String email) {
+        log.info("查询的 email 是{}", email);
+        return securityUserService.getUserInfoByEmail(email);
+    }
+
+    @Override
+    public SecurityUserDto userInfoByPhone(String phone) {
+        log.info("查询的 phone 是{}", phone);
+        return securityUserService.getUserInfoByPhone(phone);
+    }
+
+    @Override
     public Boolean addUser(TbUser user) {
         try {
             userService.addUser(user);
@@ -56,5 +68,15 @@ public class UserClient implements IUserClient {
     @Override
     public Map<String, List<String>> getPermission() {
         return permissionService.getPermission();
+    }
+
+    @Override
+    public boolean testEmailExist(String email) {
+        return userService.testEmailExist(email);
+    }
+
+    @Override
+    public boolean testPhoneExist(String phone) {
+        return userService.testPhoneExist(phone);
     }
 }

@@ -11,4 +11,6 @@ public class AuthConstant {
 
     public static final String AUTHORIZATION = "Authorization";
 
+    public static final int TIMEOUT_TIME = 15 * 60 * 1000;
+
 }

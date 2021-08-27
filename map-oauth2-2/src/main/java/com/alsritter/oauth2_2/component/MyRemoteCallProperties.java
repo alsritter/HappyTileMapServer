@@ -24,7 +24,8 @@ public class MyRemoteCallProperties {
     public static class ClientIterior {
         private String clientId;
         private String clientSecret;
-
+        private Integer accessTokenValiditySeconds;
+        private Integer refreshTokenValiditySeconds;
         private String base64;
 
         @PostConstruct
@@ -40,7 +41,8 @@ public class MyRemoteCallProperties {
     public static class ClientWeb {
         private String clientId;
         private String clientSecret;
-
+        private Integer accessTokenValiditySeconds;
+        private Integer refreshTokenValiditySeconds;
         private String base64;
 
         @PostConstruct

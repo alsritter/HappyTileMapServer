@@ -1,0 +1,34 @@
+# gsrykzblukhlcidc
+# HappyMapProject
+
+#spring.mail.host=smtp.qq.com
+#spring.mail.port=587
+#spring.mail.username=1510161612@qq.com
+#spring.mail.password=ubknfzhjkhrbbabe
+#spring.mail.default-encoding=UTF-8
+#spring.mail.properties.mail.smtp.socketFactoryClass=javax.net.ssl.SSLSocketFactory
+#spring.mail.properties.mail.debug=true
+
+#  smtp 服务器的端口或者地址参考 https://service.mail.qq.com/cgi-bin/help?subtype=1&&id=28&&no=371
+spring:
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: 3517600172@qq.com
+    # 这个不是真的密码，而是申请的授权码
+    password: gsrykzblukhlcidc
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          socketFactoryClass: "javax.net.ssl.SSLSocketFactory"
+        debug: true
+
+# 配置含义分别如下：
+#   配置 SMTP 服务器地址
+#   SMTP 服务器的端口
+#   配置邮箱用户名
+#   配置密码，注意，不是真正的密码，而是刚刚申请到的授权码
+#   默认的邮件编码
+#   配饰 SSL 加密工厂
+#   表示开启 DEBUG 模式，这样，邮件发送过程的日志会在控制台打印出来，方便排查错误

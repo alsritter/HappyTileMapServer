@@ -11,4 +11,6 @@ import com.alsritter.serviceapi.user.domain.SecurityUserDto;
 public interface SecurityUserService {
     SecurityUserDto getUserInfoById(long id);
     SecurityUserDto getUserInfoByName(String username);
+    SecurityUserDto getUserInfoByEmail(String email);
+    SecurityUserDto getUserInfoByPhone(String phone);
 }

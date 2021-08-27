@@ -2,6 +2,8 @@ server:
   port: 16666
 
 spring:
+  profiles:
+    active: email
   application:
     name: oauth2-service
   main:
@@ -43,6 +45,14 @@ myremote:
     interior:
       client-id: interiorClient
       client-secret: secret
+      # 一天
+      access-token-validity-seconds: 86400
+      # 15 天
+      refresh-token-validity-seconds: 1296000
     web:
       client-id: webClient
       client-secret: secret
+      # 一天
+      access-token-validity-seconds: 86400
+      # 15 天
+      refresh-token-validity-seconds: 1296000

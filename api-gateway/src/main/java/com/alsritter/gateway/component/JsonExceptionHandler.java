@@ -1,6 +1,7 @@
 package com.alsritter.gateway.component;
 
 import com.alsritter.common.api.ResultCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWebExceptionHandler;
@@ -17,6 +18,7 @@ import java.util.Map;
  * @author alsritter
  * @version 1.0
  **/
+@Slf4j
 public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
 
     public JsonExceptionHandler(ErrorAttributes errorAttributes, ResourceProperties resourceProperties,

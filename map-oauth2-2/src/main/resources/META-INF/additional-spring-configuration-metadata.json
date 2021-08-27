@@ -19,6 +19,16 @@
       "name": "myremote.client.web.client-secret",
       "type": "java.lang.String",
       "description": "外部 client-secret."
+    },
+    {
+      "name": "myremote.client.interior.access-token-validity-seconds",
+      "type": "java.lang.Integer",
+      "description": "令牌有效时间."
+    },
+    {
+      "name": "myremote.client.interior.refresh-token-validity-seconds",
+      "type": "java.lang.Integer",
+      "description": "刷新令牌有效时间."
     }
   ]
 }

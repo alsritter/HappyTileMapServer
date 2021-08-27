@@ -6,11 +6,14 @@ import com.alsritter.service.user.mapper.TbUserMapper;
 import com.alsritter.service.user.service.TbRoleService;
 import com.alsritter.service.user.service.TbUserService;
 import com.alsritter.serviceapi.user.entity.TbUser;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * 用户表服务接口实现
@@ -42,5 +45,29 @@ public class TbUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> impleme
         // 给用户添加权限
         Long userId = user.getUserId();
         roleService.setDefaultRole(userId);
+    }
+
+    /**
+     * 返回邮箱是否存在，true 表示存在
+     */
+    @Override
+    public boolean testEmailExist(String email) {
+        TbUser tbUser = new TbUser();
+        tbUser.setEmail(email);
+        Integer count = baseMapper.selectCount(Wrappers.<TbUser>query().lambda().eq(TbUser::getEmail, tbUser.getEmail()));
+        count = Optional.ofNullable(count).orElse(0);
+        return count != 0;
+    }
+
+    /**
+     * 返回手机号是否存在，true 表示存在
+     */
+    @Override
+    public boolean testPhoneExist(String phone) {
+        TbUser tbUser = new TbUser();
+        tbUser.setPhone(phone);
+        Integer count = baseMapper.selectCount(Wrappers.<TbUser>query().lambda().eq(TbUser::getPhone, tbUser.getPhone()));
+        count = Optional.ofNullable(count).orElse(0);
+        return count != 0;
     }
 }

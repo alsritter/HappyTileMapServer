@@ -1,6 +1,7 @@
 package com.alsritter.oauth2_2.service;
 
 import com.alsritter.common.api.ResultCode;
+import com.alsritter.common.exception.BusinessException;
 import com.alsritter.common.token.SecurityUser;
 import com.alsritter.serviceapi.auth.domain.RegisterUserTo;
 import com.alsritter.serviceapi.user.domain.SecurityUserDto;
@@ -73,51 +74,69 @@ public class UserService implements UserDetailsService {
             // feign.codec.DecodeException 异常多半是因为构造的 Result对象没有 空的构造器
             body = userClient.userInfoByName(username);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BusinessException(e);
         }
 
         if (Objects.requireNonNull(body).getUser() == null)
-            throw new UsernameNotFoundException(ResultCode.USERNAME_PASSWORD_ERROR.getMessage());
+            throw new BusinessException(ResultCode.USERNAME_PASSWORD_ERROR);
 
-        // 将从 feign 取得的数据构造成 SecurityUser
+        return buildSecurityUser(body);
+    }
+
+    public SecurityUser getUserPhone(String phone) {
+        SecurityUserDto body = null;
+        try {
+            body = userClient.userInfoByPhone(phone);
+        } catch (Exception e) {
+            throw new BusinessException(e);
+        }
+
+        if (Objects.requireNonNull(body).getUser() == null)
+            throw new BusinessException(ResultCode.PHONE_NOT_FOUND_EXCEPTION);
+
+        return buildSecurityUser(body);
+    }
+
+    public SecurityUser getUserByEmail(String email) {
+        SecurityUserDto body = null;
+        try {
+            body = userClient.userInfoByEmail(email);
+        } catch (Exception e) {
+            throw new BusinessException(e);
+        }
+
+        if (Objects.requireNonNull(body).getUser() == null)
+            throw new BusinessException(ResultCode.EMAIL_NOT_FOUND_EXCEPTION);
+
+        return buildSecurityUser(body);
+    }
+
+    /**
+     * 将从 feign 取得的数据构造成 SecurityUser
+     */
+    private SecurityUser buildSecurityUser(SecurityUserDto body) {
+        //
         SecurityUser securityUser = new SecurityUser();
         securityUser.setUserAccount(body.getUser().getUsername());
         securityUser.setUserPassword(body.getUser().getPassword());
         securityUser.setPermissions(body.getRoles().stream()
                 .map(x -> new SimpleGrantedAuthority(x.getEnname())).collect(Collectors.toList()));
-
         return securityUser;
-    }
-
-    /**
-     * 返回一个空对象
-     */
-    public SecurityUser getUserPhone(String phone) {
-        return new SecurityUser();
-    }
-
-    /**
-     * 返回一个空对象
-     */
-    public SecurityUser getUserByEmail(String email) {
-        return new SecurityUser();
     }
 
     /**
      * 注册一个用户
      */
-    public boolean registerUser(RegisterUserTo user) {
+    public void registerUser(RegisterUserTo user) {
         TbUser ruser = new TbUser();
         ruser.setPassword(passwordEncoder.encode(user.getPassword()));
         ruser.setUsername(user.getUsername());
         ruser.setCreateTime(LocalDateTime.now());
         ruser.setLastModifyTime(LocalDateTime.now());
-        ruser.setAvatar(user.getAvatar());
         ruser.setDescription(user.getDescription());
         ruser.setEmail(user.getEmail());
         ruser.setPhone(user.getPhone());
 
-        return Optional.ofNullable(userClient.addUser(ruser))
-                .orElse(false);
+        userClient.addUser(ruser);
     }
 }

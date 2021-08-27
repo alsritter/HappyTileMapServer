@@ -12,12 +12,12 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.BadOpaqueTokenException;
-import org.springframework.security.oauth2.server.resource.introspection.NimbusReactiveOpaqueTokenIntrospector;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionException;
 import org.springframework.security.oauth2.server.resource.introspection.ReactiveOpaqueTokenIntrospector;
 import org.springframework.util.Assert;
@@ -32,12 +32,11 @@ import java.time.Instant;
 import java.util.*;
 
 import static org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionClaimNames.*;
-import static org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionClaimNames.ISSUER;
 
 /**
  * 参考默认的检查工具类
  * NimbusReactiveOpaqueTokenIntrospector
- *
+ * <p>
  * 检查 CheckTokenEndpoint 工具类
  *
  * @author alsritter
@@ -147,7 +146,7 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
         } else {
             List<Audience> pasAudiences = null;
             try {
-                pasAudiences = Audience.create(JSONObjectUtils.getStringList(parameters , "authorities"));
+                pasAudiences = Audience.create(JSONObjectUtils.getStringList(parameters, "authorities"));
             } catch (ParseException e) {
                 pasAudiences = Collections.emptyList();
             }
@@ -161,8 +160,6 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
                 claims.put(AUDIENCE, Collections.unmodifiableList(audiences));
             }
         }
-
-
         if (response.getClientID() != null) {
             claims.put(CLIENT_ID, response.getClientID().getValue());
         }
@@ -180,7 +177,6 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
         if (response.getNotBeforeTime() != null) {
             claims.put(NOT_BEFORE, response.getNotBeforeTime().toInstant());
         }
-
 
 
         return new DefaultOAuth2AuthenticatedPrincipal(claims, authorities);

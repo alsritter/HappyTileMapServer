@@ -41,6 +41,24 @@ public interface IUserClient {
     SecurityUserDto userInfoByName(@RequestParam("username") String username);
 
     /**
+     * 根据邮箱获取用户信息
+     *
+     * @param email 邮箱
+     * @return 用户信息
+     */
+    @GetMapping(API_PREFIX + "/user-info-by-email")
+    SecurityUserDto userInfoByEmail(@RequestParam("email") String email);
+
+    /**
+     * 根据手机号获取用户信息
+     *
+     * @param phone 手机号
+     * @return 用户信息
+     */
+    @GetMapping(API_PREFIX + "/user-info-by-phone")
+    SecurityUserDto userInfoByPhone(@RequestParam("phone") String phone);
+
+    /**
      * 新建用户
      *
      * @param user 用户实体
@@ -54,4 +72,16 @@ public interface IUserClient {
      */
     @GetMapping(API_PREFIX + "/all-permission-by-redis")
     Map<String, List<String>> getPermission();
+
+    /**
+     * 检查是否存在这个 Email
+     */
+    @GetMapping(API_PREFIX + "/test-email-exist")
+    boolean testEmailExist(@RequestParam("email") String email);
+
+    /**
+     * 检查是否存在这个 Phone
+     */
+    @GetMapping(API_PREFIX + "/test-phone-exist")
+    boolean testPhoneExist(@RequestParam("phone") String phone);
 }

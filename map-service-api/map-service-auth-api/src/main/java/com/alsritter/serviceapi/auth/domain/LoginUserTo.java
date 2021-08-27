@@ -60,6 +60,5 @@ public class LoginUserTo {
      * 验证码
      */
     @ApiModelProperty(value = "验证码")
-    @NotBlank
     private String captcha;
 }

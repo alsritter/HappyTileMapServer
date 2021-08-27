@@ -1,5 +1,7 @@
 package com.alsritter.oauth2_2.provider;
 
+import com.alsritter.common.AuthConstant;
+import com.alsritter.common.exception.BusinessException;
 import com.alsritter.common.token.EmailAuthenticationToken;
 import com.alsritter.common.token.PhoneAuthenticationToken;
 import com.alsritter.common.token.SecurityUser;
@@ -38,7 +40,7 @@ public class EmailAuthenticationProvider implements AuthenticationProvider, Prov
 
         if (user != null) {
             // 写入用户信息并返回认证类
-            return new PhoneAuthenticationToken(user, user.getAuthorities());
+            return new EmailAuthenticationToken(user, user.getAuthorities());
         }
 
         return null;
@@ -53,8 +55,13 @@ public class EmailAuthenticationProvider implements AuthenticationProvider, Prov
     public Authentication authenticate(HttpServletRequest request) {
         String email = request.getParameter("email");
         String code = request.getParameter("code");
-
         String realCode = (String) request.getSession().getAttribute("emailCode");
+        Object timeout = request.getSession().getAttribute("emailCodeTimeout");
+
+        if (timeout == null || Long.parseLong(timeout.toString()) < System.currentTimeMillis()) {
+            throw new BusinessException("请重新发送验证码");
+        }
+
         return new EmailAuthenticationToken(email, code, realCode);
     }
 

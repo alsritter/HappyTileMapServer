@@ -12,26 +12,31 @@ public enum ResultCode implements IErrorCode {
     FAILED(HttpStatus.HTTP_INTERNAL_ERROR, "操作失败"),
     UNKNOW_EXCEPTION(HttpStatus.HTTP_INTERNAL_ERROR, "系统未知异常"),
 
-    VALIDATE_FAILED(30001, "参数检验失败"),
-    BIND_EXCEPTION(30002, "参数绑定错误"),
-    REQUEST_PARAMETER_ERROR(30003, "请求参数错误"),
-    CAPTCHA_EXCEPTION(30004, "验证码错误"),
+    VALIDATE_FAILED(20001, "参数检验失败"),
+    BIND_EXCEPTION(20002, "参数绑定错误"),
+    REQUEST_PARAMETER_ERROR(20003, "请求参数错误"),
+    CAPTCHA_EXCEPTION(20004, "验证码错误"),
+    EMAIL_CAPTCHA_EXCEPTION(20005, "邮件验证码错误"),
 
     USER_EXIST_EXCEPTION(35001, "存在相同的用户"),
     PHONE_EXIST_EXCEPTION(35002, "存在相同的手机号"),
     USERNAME_PASSWORD_ERROR(35003, "账号或密码错误"),
     USER_NAME_NOT_FOUND_EXCEPTION(35004, "用户名没有找到"),
+    EMAIL_NOT_FOUND_EXCEPTION(35005, "邮箱没有找到"),
+    PHONE_NOT_FOUND_EXCEPTION(35005, "手机号没有找到"),
 
 
     OAUTH2_EXCEPTION(40001, "OAuth 异常"),
-    UNAUTHORIZED(40002, "暂未登录或该账户的登录凭证已过期，请重新登录!"),
+    UNAUTHORIZED(40002, "未登录，无法访问!"),
     INSUFFICIENT_AUTHENTICATION_EXCEPTION(40003, "登陆凭证错误"),
+
+    ACCESS_REQUIRED_EXCEPTION(45003, "令牌请求异常"),
     ACCOUNT_DISABLED(45004, "该账户已被禁用，请联系管理员!"),
     ACCOUNT_LOCKED(45005, "该账号已被锁定，请联系管理员!"),
-    ACCOUNT_EXPIRED(45006, "该账号已过期，请联系管理员!"),
+    ACCOUNT_EXPIRED(45006, "该账号已过期，请重新登陆!"),
     PERMISSION_DENIED(45007, "没有访问权限，请联系管理员!"),
     CREDENTIALS_EXPIRED(45008, "该账户的登录凭证已过期，请重新登录!"),
-
+    ACCOUNT_STATUS_EXCEPTION(45009, "令牌状态错误"),
 
 
     READ_TIME_OUT_EXCEPTION(50001, "远程调用服务超时，请重新再试"),

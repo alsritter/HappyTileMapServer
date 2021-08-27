@@ -25,7 +25,6 @@ public class SecurityUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> i
     private final TbPermissionMapper permissionMapper;
     private final TbRoleMapper roleMapper;
 
-
     @Override
     public SecurityUserDto getUserInfoById(long id) {
         TbUser tbUser = new TbUser();
@@ -39,6 +38,22 @@ public class SecurityUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> i
         TbUser tbUser = new TbUser();
         tbUser.setUsername(username);
         tbUser = baseMapper.selectOne(Wrappers.<TbUser>query().lambda().eq(TbUser::getUsername, tbUser.getUsername()));
+        return getUserInfo(tbUser);
+    }
+
+    @Override
+    public SecurityUserDto getUserInfoByEmail(String email) {
+        TbUser tbUser = new TbUser();
+        tbUser.setEmail(email);
+        tbUser = baseMapper.selectOne(Wrappers.<TbUser>query().lambda().eq(TbUser::getEmail, tbUser.getEmail()));
+        return getUserInfo(tbUser);
+    }
+
+    @Override
+    public SecurityUserDto getUserInfoByPhone(String phone) {
+        TbUser tbUser = new TbUser();
+        tbUser.setPhone(phone);
+        tbUser = baseMapper.selectOne(Wrappers.<TbUser>query().lambda().eq(TbUser::getPhone, tbUser.getPhone()));
         return getUserInfo(tbUser);
     }
 
