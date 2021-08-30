@@ -1,5 +1,8 @@
 package com.alsritter.gateway.component;
 
+import cn.hutool.json.JSONUtil;
+import com.alsritter.common.api.ResultCode;
+import com.alsritter.common.exception.BusinessException;
 import com.nimbusds.oauth2.sdk.ParseException;
 import com.nimbusds.oauth2.sdk.TokenIntrospectionResponse;
 import com.nimbusds.oauth2.sdk.TokenIntrospectionSuccessResponse;
@@ -8,11 +11,8 @@ import com.nimbusds.oauth2.sdk.id.Audience;
 import com.nimbusds.oauth2.sdk.util.JSONObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
-import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
@@ -44,6 +44,7 @@ import static org.springframework.security.oauth2.server.resource.introspection.
  **/
 @Slf4j
 public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTokenIntrospector {
+
     private final URI introspectionUri;
     private final WebClient webClient;
 
@@ -74,10 +75,13 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
                 .map(this::parseNimbusResponse)
                 .map(this::castToNimbusSuccess)
                 .doOnNext(response -> validate(token, response))
-                .map(this::convertClaimsSet)
-                .onErrorMap(e -> !(e instanceof OAuth2IntrospectionException), this::onError);
+                .map(this::convertClaimsSet);
+                // .onErrorMap(e -> !(e instanceof OAuth2IntrospectionException || e instanceof BusinessException), this::onError);
     }
 
+    /**
+     * 根据 Token 发请求校验（oauth/check_token）
+     */
     private Mono<ClientResponse> makeRequest(String token) {
         return this.webClient.post()
                 .uri(this.introspectionUri)
@@ -86,15 +90,58 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
                 .exchange();
     }
 
+    /**
+     * 响应数据，通过 flatMap 传递进来，map 返回的是原来的序列，flatMap 返回的是一个新的序列
+     */
     private Mono<HTTPResponse> adaptToNimbusResponse(ClientResponse responseEntity) {
+        // 这里是从 CheckTokenEndpoint 返回的结果
         HTTPResponse response = new HTTPResponse(responseEntity.rawStatusCode());
         response.setHeader(HttpHeaders.CONTENT_TYPE, responseEntity.headers().contentType().get().toString());
         if (response.getStatusCode() != HTTPResponse.SC_OK) {
-            return responseEntity.bodyToFlux(DataBuffer.class)
-                    .map(DataBufferUtils::release)
-                    .then(Mono.error(new OAuth2IntrospectionException(
-                            "Introspection endpoint responded with " + response.getStatusCode())));
+
+            // return responseEntity.bodyToMono(String.class)
+            //         .doOnNext(System.out::println)
+            //         .then(Mono.error(new OAuth2IntrospectionException(
+            //                 "Introspection endpoint responded with " + response.getStatusCode())));
+
+            // Reactor 使用参考：https://stackoverflow.com/questions/53595420/correct-way-of-throwing-exceptions-with-reactor
+            return responseEntity.bodyToMono(String.class)
+                    .doOnNext(System.out::println)
+                    // .handle((json, sink) -> {
+                    //     cn.hutool.json.JSONObject jsonObject = JSONUtil.parseObj(json);
+                    //     Integer code = jsonObject.getInt("code");
+                    //     String message = jsonObject.getStr("message");
+                    //
+                    //     if (code != null && message != null) {
+                    //
+                    //         if (code == ResultCode.ACCOUNT_EXPIRED.getCode()) {
+                    //             sink.error(new BusinessException(ResultCode.ACCOUNT_EXPIRED));
+                    //         }
+                    //
+                    //         sink.error(new BusinessException(code, message));
+                    //     } else {
+                    //         sink.error(new OAuth2IntrospectionException("Introspection endpoint responded with "
+                    //                 + response.getStatusCode()));
+                    //     }
+                    // });
+                    .flatMap(json -> {
+                            cn.hutool.json.JSONObject jsonObject = JSONUtil.parseObj(json);
+                            Integer code = jsonObject.getInt("code");
+                            String message = jsonObject.getStr("message");
+
+                            if (code != null && message != null) {
+
+                                if (code == ResultCode.ACCOUNT_EXPIRED.getCode()) {
+                                    return Mono.error(new BusinessException(ResultCode.ACCOUNT_EXPIRED));
+                                }
+
+                                return Mono.error(new BusinessException(code, message));
+                            } else {
+                                return Mono.error(new BusinessException(ResultCode.ACCOUNT_INTROSPECTION_EXCEPTION));
+                            }
+                    });
         }
+
         return responseEntity.bodyToMono(String.class)
                 .doOnNext(response::setContent)
                 .map(body -> response);
@@ -104,13 +151,15 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
         try {
             return TokenIntrospectionResponse.parse(response);
         } catch (Exception ex) {
-            throw new OAuth2IntrospectionException(ex.getMessage(), ex);
+            // throw new OAuth2IntrospectionException(ex.getMessage(), ex);
+            throw new BusinessException(ResultCode.ACCOUNT_INTROSPECTION_EXCEPTION);
         }
     }
 
     private TokenIntrospectionSuccessResponse castToNimbusSuccess(TokenIntrospectionResponse introspectionResponse) {
         if (!introspectionResponse.indicatesSuccess()) {
-            throw new OAuth2IntrospectionException("Token introspection failed");
+            // throw new OAuth2IntrospectionException("Token introspection failed");
+            throw new BusinessException(ResultCode.ACCOUNT_VALIDATE_EXCEPTION);
         }
         return (TokenIntrospectionSuccessResponse) introspectionResponse;
     }
@@ -118,7 +167,7 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
     private void validate(String token, TokenIntrospectionSuccessResponse response) {
         // relying solely on the authorization server to validate this token (not checking 'exp', for example)
         if (!response.isActive()) {
-            throw new BadOpaqueTokenException("Provided token isn't active");
+            throw new BusinessException(ResultCode.ACCOUNT_VALIDATE_EXCEPTION);
         }
     }
 
@@ -190,7 +239,7 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
         }
     }
 
-    private OAuth2IntrospectionException onError(Throwable e) {
-        return new OAuth2IntrospectionException(e.getMessage(), e);
-    }
+    // private BusinessException onError(Throwable e) {
+    //     return new BusinessException(e.getMessage(), e);
+    // }
 }

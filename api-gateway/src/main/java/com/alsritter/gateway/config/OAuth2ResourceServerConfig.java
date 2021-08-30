@@ -1,6 +1,7 @@
 package com.alsritter.gateway.config;
 
 import cn.hutool.core.util.ArrayUtil;
+import com.alsritter.common.AppConstant;
 import com.alsritter.gateway.component.MyNimbusReactiveOpaqueTokenIntrospector;
 import com.alsritter.gateway.component.RestAuthenticationEntryPoint;
 import com.alsritter.gateway.component.RestfulAccessDeniedHandler;
@@ -51,8 +52,8 @@ public class OAuth2ResourceServerConfig {
         // Collection<? extends GrantedAuthority> collection = (Collection<? extends GrantedAuthority>) attributes.get("authorities");
 
         http.addFilterAt(corsFilter(), SecurityWebFiltersOrder.CORS);
-
-        String checkTokenEndpointUrl = getUrl() + tokenConfig.getCheckTokenEndpointUrl();
+        String url = "http://" + AppConstant.APPLICATION_OAUTH2_NAME;
+        String checkTokenEndpointUrl = url + tokenConfig.getCheckTokenEndpointUrl();
         log.debug("token 检查地址为 {}", checkTokenEndpointUrl);
 
         http.oauth2ResourceServer().opaqueToken()
@@ -76,16 +77,16 @@ public class OAuth2ResourceServerConfig {
         return http.build();
     }
 
-    public String getUrl() {
-        String address = null;
-        try {
-            InetAddress host = InetAddress.getLocalHost();
-            address = host.getHostAddress();
-        } catch (UnknownHostException e) {
-            address = "127.0.0.1";
-        }
-        return "http://" + address + ":" + this.port;
-    }
+    // public String getUrl() {
+    //     String address = null;
+    //     try {
+    //         InetAddress host = InetAddress.getLocalHost();
+    //         address = host.getHostAddress();
+    //     } catch (UnknownHostException e) {
+    //         address = "127.0.0.1";
+    //     }
+    //     return "http://" + address + ":" + this.port;
+    // }
 
     // @Bean
     // public Converter<Jwt, ? extends Mono<? extends AbstractAuthenticationToken>> jwtAuthenticationConverter() {

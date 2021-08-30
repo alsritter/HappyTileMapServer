@@ -54,6 +54,9 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     /**
      * 这里通过名字指定从 AuthorizationServerConfig 配置类里面配置的 DefaultTokenServices
      * 注意 @Autowired 默认是按照类型装配注入的，如果想按照名称来转配注入，则需要结合 @Qualifier 一起使用；
+     * 注意：access_token 从哪里来 参考自：
+     * Spring Boot+OAuth2，如何自定义返回的 Token 信息？
+     * https://blog.csdn.net/u012702547/article/details/105804972
      */
     @Qualifier("redisTokenServices")
     private AuthorizationServerTokenServices authorizationServerTokenServices;
@@ -97,11 +100,13 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
         // 设置这个 Token 为自定义类型
         // TokenRequest tokenRequest = new TokenRequest(MapUtil.empty(), clientId, clientDetails.getScope(), "custom");
-
         TokenRequest tokenRequest = new TokenRequest(MapUtil.empty(), clientId, clientDetails.getScope(), grantType);
 
         final OAuth2Request oAuth2Request = tokenRequest.createOAuth2Request(clientDetails);
         final OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
+        // 这个 createAccessToken 参考 DefaultTokenServices.createAccessToken 方法
+        // 这个 DefaultTokenServices 是 RedisTokenStoreConfig 文件里面创建的
+        // 如果已经存在 Token 则直接从 tokenStore（RedisTokenStore） 中取得 Token
         final OAuth2AccessToken token = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
 
         if (Objects.isNull(token)) {

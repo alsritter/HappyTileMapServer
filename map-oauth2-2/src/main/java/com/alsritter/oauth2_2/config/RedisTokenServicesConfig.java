@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
@@ -22,14 +25,15 @@ import java.util.ArrayList;
  **/
 @Configuration
 @AllArgsConstructor
-public class RedisTokenStoreConfig {
+public class RedisTokenServicesConfig {
 
     /**
      * redis 工厂，默认使用 lettue
      */
     private final RedisConnectionFactory redisConnectionFactory;
     private final RedisTokenEnhancer redisTokenEnhancer;
-    private final MyRemoteCallProperties.ClientWeb remoteCallProperties;
+    private final ClientDetailsService clientDetailsService;
+
 
     @Bean
     public TokenStore redisTokenStore() {
@@ -54,20 +58,20 @@ public class RedisTokenStoreConfig {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(redisTokenStore());
         defaultTokenServices.setSupportRefreshToken(true);  // 启用刷新令牌
-
         ArrayList<TokenEnhancer> delegates = new ArrayList<>();
         delegates.add(redisTokenEnhancer);
 
         val enhancerChain = new TokenEnhancerChain();
         enhancerChain.setTokenEnhancers(delegates);                 // 配置内容增强器
         defaultTokenServices.setTokenEnhancer(enhancerChain);       // 这个很重要
-
+        defaultTokenServices.setClientDetailsService(clientDetailsService);
         // 访问令牌的默认有效性（以秒为单位）。 非过期令牌为零或负数。 如果设置了客户端详细信息服务，则将从客户端读取有效期，如果客户端未定义，则默认为该值。
-        // TODO 如果设置了 ClientDetailsService 这个配置无效
-        defaultTokenServices.setAccessTokenValiditySeconds(remoteCallProperties.getAccessTokenValiditySeconds());
-        defaultTokenServices.setRefreshTokenValiditySeconds(remoteCallProperties.getRefreshTokenValiditySeconds());
+        // 默认走 DefaultTokenServices.getAccessTokenValiditySeconds 取客户凭证的过期时间，所以这里设置是无效的
+        // defaultTokenServices.setAccessTokenValiditySeconds(remoteCallProperties.getAccessTokenValiditySeconds());
+        // defaultTokenServices.setRefreshTokenValiditySeconds(remoteCallProperties.getRefreshTokenValiditySeconds());
 
+        // 注意！！！ redisTokenStore 的策略是这个 Token 的过期时间，即为这个 Key 的存活时间，
+        // 所以是无法通过 Expiration 来取得过期时间的（因为过期直接就没有了~~）
         return defaultTokenServices;
     }
-
 }

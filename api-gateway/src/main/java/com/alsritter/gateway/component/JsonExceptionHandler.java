@@ -1,6 +1,7 @@
 package com.alsritter.gateway.component;
 
 import com.alsritter.common.api.ResultCode;
+import com.alsritter.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
@@ -32,13 +33,19 @@ public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
     @Override
     protected Map<String, Object> getErrorAttributes(ServerRequest request, ErrorAttributeOptions options) {
         Throwable error = super.getError(request);
-        String exMessage = error != null ? error.getMessage() : ResultCode.FAILED.getMessage();
-        String message = String.format("request error [%s %s]，exception：%s", request.methodName(), request.uri(), exMessage);
-
         Map<String, Object> map = new HashMap<>(3);
-        map.put("code", ResultCode.FAILED.getCode());
-        map.put("message", message);
-        map.put("data", null);
+        if (error instanceof BusinessException) {
+            map.put("code", ((BusinessException) error).getErrorCode());
+            map.put("message", error.getMessage());
+            map.put("data", null);
+
+        } else {
+            String exMessage = error != null ? error.getMessage() : ResultCode.FAILED.getMessage();
+            String message = String.format("request error [%s %s]，exception：%s", request.methodName(), request.uri(), exMessage);
+            map.put("code", ResultCode.FAILED.getCode());
+            map.put("message", message);
+            map.put("data", null);
+        }
         return map;
     }
 

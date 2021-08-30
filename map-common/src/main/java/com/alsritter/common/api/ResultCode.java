@@ -37,6 +37,8 @@ public enum ResultCode implements IErrorCode {
     PERMISSION_DENIED(45007, "没有访问权限，请联系管理员!"),
     CREDENTIALS_EXPIRED(45008, "该账户的登录凭证已过期，请重新登录!"),
     ACCOUNT_STATUS_EXCEPTION(45009, "令牌状态错误"),
+    ACCOUNT_VALIDATE_EXCEPTION(45010, "令牌校验失败"),
+    ACCOUNT_INTROSPECTION_EXCEPTION(45011, "令牌解析失败"),
 
 
     READ_TIME_OUT_EXCEPTION(50001, "远程调用服务超时，请重新再试"),
