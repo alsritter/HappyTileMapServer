@@ -40,10 +40,7 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            // // 如果是身份验证失败
-            // if (e instanceof InsufficientAuthenticationException) {
-            //     // TODO: 这里需要重新验证
-            // }
+            // 用来抛出错误
             resolver.resolveException(request, response, null, e);
         }
     }

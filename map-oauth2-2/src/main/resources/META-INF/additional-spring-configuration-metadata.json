@@ -29,6 +29,16 @@
       "name": "myremote.client.interior.refresh-token-validity-seconds",
       "type": "java.lang.Integer",
       "description": "刷新令牌有效时间."
+    },
+    {
+      "name": "myremote.client.web.access-token-validity-seconds",
+      "type": "java.lang.String",
+      "description": "web 令牌有效时间."
+    },
+    {
+      "name": "myremote.client.web.refresh-token-validity-seconds",
+      "type": "java.lang.String",
+      "description": "web 刷新令牌有效时间."
     }
   ]
 }

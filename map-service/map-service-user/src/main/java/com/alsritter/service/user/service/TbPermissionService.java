@@ -17,4 +17,6 @@ public interface TbPermissionService {
      * 取得全部权限
      */
     Map<String, List<String>> getPermission();
+
+    List<String> getPublicPermission();
 }

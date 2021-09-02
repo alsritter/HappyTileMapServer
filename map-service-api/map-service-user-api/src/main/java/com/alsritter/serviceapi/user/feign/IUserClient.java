@@ -32,6 +32,15 @@ public interface IUserClient {
 
 
     /**
+     * 根据用户 id 取得 user
+     *
+     * @param id 用户id
+     * @return 用户信息
+     */
+    @GetMapping(API_PREFIX + "/get-user-by-id")
+    TbUser getUser(@RequestParam("id") Long id);
+
+    /**
      * 根据用户名获取用户信息
      *
      * @param username 用户名
@@ -74,6 +83,12 @@ public interface IUserClient {
     Map<String, List<String>> getPermission();
 
     /**
+     * 取得全部开放资源
+     */
+    @GetMapping(API_PREFIX + "/all-public-permission-by-redis")
+    List<String> getPublicPermission();
+
+    /**
      * 检查是否存在这个 Email
      */
     @GetMapping(API_PREFIX + "/test-email-exist")
@@ -84,4 +99,16 @@ public interface IUserClient {
      */
     @GetMapping(API_PREFIX + "/test-phone-exist")
     boolean testPhoneExist(@RequestParam("phone") String phone);
+
+    /**
+     * 设置用户头像
+     */
+    @PostMapping(API_PREFIX + "/set-user-avatar")
+    boolean setUserAvatar(@RequestParam("id") Long id, @RequestParam("url") String url);
+
+    /**
+     * 设置新密码
+     */
+    @PostMapping(API_PREFIX + "/set-new-password")
+    boolean setNewPassword(@RequestParam("id") Long id, @RequestParam("password") String password);
 }

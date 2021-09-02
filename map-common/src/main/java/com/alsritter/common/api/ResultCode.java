@@ -20,10 +20,11 @@ public enum ResultCode implements IErrorCode {
 
     USER_EXIST_EXCEPTION(35001, "存在相同的用户"),
     PHONE_EXIST_EXCEPTION(35002, "存在相同的手机号"),
-    USERNAME_PASSWORD_ERROR(35003, "账号或密码错误"),
+    USERNAME_ERROR(35003, "用户名错误"),
     USER_NAME_NOT_FOUND_EXCEPTION(35004, "用户名没有找到"),
     EMAIL_NOT_FOUND_EXCEPTION(35005, "邮箱没有找到"),
-    PHONE_NOT_FOUND_EXCEPTION(35005, "手机号没有找到"),
+    PHONE_NOT_FOUND_EXCEPTION(35006, "手机号没有找到"),
+    PASSWORD_ERROR(35007, "密码错误"),
 
 
     OAUTH2_EXCEPTION(40001, "OAuth 异常"),
@@ -39,6 +40,7 @@ public enum ResultCode implements IErrorCode {
     ACCOUNT_STATUS_EXCEPTION(45009, "令牌状态错误"),
     ACCOUNT_VALIDATE_EXCEPTION(45010, "令牌校验失败"),
     ACCOUNT_INTROSPECTION_EXCEPTION(45011, "令牌解析失败"),
+    ACCOUNT_GET_USER_INFO_EXCEPTION(45012, "获取令牌的用户信息失败"),
 
 
     READ_TIME_OUT_EXCEPTION(50001, "远程调用服务超时，请重新再试"),
@@ -47,7 +49,12 @@ public enum ResultCode implements IErrorCode {
     FEIGN_EXCEPTION(50004, "远距离调用错误"),
 
     USER_INSERT_FAILED(60001, "用户插入失败"),
-    SET_ROLE_FAILED(60002, "设置权限失败");
+    SET_ROLE_FAILED(60002, "设置权限失败"),
+    SEND_TOPIC_FAILED(60003, "发送文章错误"),
+    SEND_COMMENT_FAILED(60004, "发送评论失败"),
+    UPDATE_AVATAR_FAILED(60005, "更新头像失败"),
+    MODIFY_PASSWORD_FAILED(60006, "修改密码失败")
+    ;
 
 
 

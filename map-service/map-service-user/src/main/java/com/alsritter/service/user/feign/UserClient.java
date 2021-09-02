@@ -10,7 +10,9 @@ import com.alsritter.serviceapi.user.entity.TbUser;
 import com.alsritter.serviceapi.user.feign.IUserClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -43,6 +45,11 @@ public class UserClient implements IUserClient {
     }
 
     @Override
+    public TbUser getUser(Long id) {
+        return userService.getUserById(id);
+    }
+
+    @Override
     public SecurityUserDto userInfoByEmail(String email) {
         log.info("查询的 email 是{}", email);
         return securityUserService.getUserInfoByEmail(email);
@@ -71,6 +78,11 @@ public class UserClient implements IUserClient {
     }
 
     @Override
+    public List<String> getPublicPermission() {
+        return permissionService.getPublicPermission();
+    }
+
+    @Override
     public boolean testEmailExist(String email) {
         return userService.testEmailExist(email);
     }
@@ -78,5 +90,15 @@ public class UserClient implements IUserClient {
     @Override
     public boolean testPhoneExist(String phone) {
         return userService.testPhoneExist(phone);
+    }
+
+    @Override
+    public boolean setUserAvatar(Long id, String url) {
+        return userService.setUserAvatar(id, url);
+    }
+
+    @Override
+    public boolean setNewPassword(Long id, String password) {
+        return userService.setNewPassword(id, password);
     }
 }

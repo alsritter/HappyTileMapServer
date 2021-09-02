@@ -9,6 +9,11 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 
 /**
+ * 为什么需要 refresh token 呢？
+ *
+ * 拿到 access 不等于可以拿到 refresh，因为 access 会经常在 api 调用中传输，会有安全隐患，
+ * 但即使被人拿到了，别人根本不知道 refresh，所以只要几个小时后 access 失效，别人也就没辙了。
+ *
  * @author alsritter
  * @version 1.0
  **/

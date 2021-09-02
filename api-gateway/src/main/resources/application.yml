@@ -77,7 +77,7 @@ secure:
     client-secret: secret
 #    位置 org.springframework.security.oauth2.provider.endpoint
     # 这里完整的地址是 http://127.0.0.1:19999/auth/oauth/check_token 就是自己
-    check-token-endpoint-url: /auth/oauth/check_token
+    check-token-endpoint-url: /oauth/check_token
   ignore:
     urls: #配置白名单路径
       - "/auth/**"

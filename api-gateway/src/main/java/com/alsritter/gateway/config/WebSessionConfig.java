@@ -1,6 +1,6 @@
 package com.alsritter.gateway.config;
 
-import com.alsritter.gateway.component.MyCookieWebSessionIdResolver;
+import com.alsritter.gateway.component.CustomCookieWebSessionIdResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseCookie;
@@ -20,7 +20,7 @@ public class WebSessionConfig {
 
     @Bean
     public WebSessionIdResolver webSessionIdResolver() {
-        CookieWebSessionIdResolver resolver = new MyCookieWebSessionIdResolver();
+        CookieWebSessionIdResolver resolver = new CustomCookieWebSessionIdResolver();
         resolver.setCookieName("SESSIONID");
 
         Consumer<ResponseCookie.ResponseCookieBuilder> consumer = responseCookieBuilder -> {
@@ -30,5 +30,4 @@ public class WebSessionConfig {
         resolver.addCookieInitializer(consumer);
         return resolver;
     }
-
 }

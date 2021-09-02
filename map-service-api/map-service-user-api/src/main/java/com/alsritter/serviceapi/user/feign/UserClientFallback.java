@@ -22,6 +22,11 @@ public class UserClientFallback implements IUserClient {
     }
 
     @Override
+    public TbUser getUser(Long id) {
+        throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
+    }
+
+    @Override
     public SecurityUserDto userInfoByName(String username) {
         throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
     }
@@ -47,12 +52,27 @@ public class UserClientFallback implements IUserClient {
     }
 
     @Override
+    public List<String> getPublicPermission() {
+        throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
+    }
+
+    @Override
     public boolean testEmailExist(String email) {
         throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
     }
 
     @Override
     public boolean testPhoneExist(String phone) {
+        throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
+    }
+
+    @Override
+    public boolean setUserAvatar(Long id, String url) {
+        throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
+    }
+
+    @Override
+    public boolean setNewPassword(Long id, String password) {
         throw new BusinessException(ResultCode.READ_TIME_OUT_EXCEPTION);
     }
 }

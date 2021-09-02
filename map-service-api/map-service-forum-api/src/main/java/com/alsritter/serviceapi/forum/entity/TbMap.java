@@ -3,6 +3,7 @@ package com.alsritter.serviceapi.forum.entity;
 import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.util.Date;
@@ -72,6 +73,7 @@ public class TbMap extends Model<TbMap> implements Serializable {
     /**
      * 0-正常，1-删除
      */
+    @TableLogic
     private Integer delFlag;
 
 }

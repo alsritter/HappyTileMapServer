@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  **/
 @Slf4j
-public class MyCookieWebSessionIdResolver extends CookieWebSessionIdResolver {
+public class CustomCookieWebSessionIdResolver extends CookieWebSessionIdResolver {
 
     @Override
     public List<String> resolveSessionIds(ServerWebExchange exchange) {

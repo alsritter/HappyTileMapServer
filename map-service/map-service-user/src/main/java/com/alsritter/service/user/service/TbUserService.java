@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 public interface TbUserService {
     TbUser getUserById(long id);
+
+
     void addUser(TbUser user);
 
     /**
@@ -24,4 +26,14 @@ public interface TbUserService {
      * 检查是否存在这个 Phone
      */
     boolean testPhoneExist(String phone);
+
+    /**
+     * 修改用户头像
+     */
+    boolean setUserAvatar(Long id, String url);
+
+    /**
+     * 修改新密码
+     */
+    boolean setNewPassword(Long id, String password);
 }

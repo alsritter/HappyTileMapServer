@@ -52,7 +52,7 @@ myremote:
     web:
       client-id: webClient
       client-secret: secret
-      # 一天
-      access-token-validity-seconds: 100
+      # 两个小时
+      access-token-validity-seconds: 7200
       # 15 天
       refresh-token-validity-seconds: 1296000

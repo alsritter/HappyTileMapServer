@@ -47,14 +47,6 @@ public class AuthApi {
     private final MyRemoteCallProperties.ClientWeb remoteCallProperties;
 
     /**
-     * 取得用户的登陆态
-     */
-    @GetMapping("/getuser")
-    public CommonResult<String> getUser() {
-        return CommonResult.success("ok");
-    }
-
-    /**
      * 登陆
      */
     @PostMapping(value = "/login", produces = "application/json;charset=utf-8")
@@ -208,6 +200,7 @@ public class AuthApi {
         return restTemplate.postForObject("http://" + AppConstant.APPLICATION_OAUTH2_NAME + "/oauth/token", httpEntity, String.class);
     }
 
+    // TODO: 退出登陆销毁 Token
 
     /**
      * 取得图片验证码

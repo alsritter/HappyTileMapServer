@@ -32,14 +32,17 @@ import java.util.Map;
 @Setter(onMethod_ = {@Autowired})
 public class PermissionController {
     private final RedisTemplate<String, Object> redisTemplate;
-    private final IUserClient permissionsClient;
+    private final IUserClient userClient;
 
     @PostMapping("/refresh")
     public ResponseEntity<CommonResult<String>> refreshPermission() {
         // 先清空原本 Redis 里面的数据
         redisTemplate.delete(RedisConstant.RESOURCE_ROLES_MAP);
-        Map<String, List<String>> resourceRolesMap = permissionsClient.getPermission();
+        redisTemplate.delete(RedisConstant.RESOURCE_PUBLIC_PERMISSION_LIST);
+        Map<String, List<String>> resourceRolesMap = userClient.getPermission();
+        List<String> publicPermission = userClient.getPublicPermission();
         redisTemplate.opsForHash().putAll(RedisConstant.RESOURCE_ROLES_MAP, resourceRolesMap);
+        redisTemplate.opsForList().leftPushAll(RedisConstant.RESOURCE_PUBLIC_PERMISSION_LIST, publicPermission.toArray(new String[0]));
         return ResponseEntity.ok(CommonResult.success("刷新成功"));
     }
 }

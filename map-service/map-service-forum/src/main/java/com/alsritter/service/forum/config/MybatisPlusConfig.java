@@ -1,5 +1,7 @@
 package com.alsritter.service.forum.config;
 
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,4 +38,13 @@ public class MybatisPlusConfig {
         return performanceInterceptor;
     }
 
+    /**
+     * 分页插件
+     *
+     * @return
+     */
+    @Bean
+    public PaginationInterceptor paginationInterceptor() {
+        return new PaginationInterceptor();
+    }
 }

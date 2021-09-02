@@ -46,6 +46,8 @@ public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
             map.put("message", message);
             map.put("data", null);
         }
+        // 不管咋样都应该先打印一下错误的位置
+        error.printStackTrace();
         return map;
     }
 

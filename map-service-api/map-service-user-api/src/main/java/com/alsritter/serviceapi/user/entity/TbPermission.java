@@ -1,5 +1,6 @@
 package com.alsritter.serviceapi.user.entity;
 
+import com.alsritter.serviceapi.user.enums.IsPublicEnum;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -51,4 +52,9 @@ public class TbPermission extends Model<TbPermission> implements Serializable {
      * updated
      */
     private Date updated;
+
+    /**
+     * 当前资源是否开放
+     */
+    private IsPublicEnum isPublic;
 }

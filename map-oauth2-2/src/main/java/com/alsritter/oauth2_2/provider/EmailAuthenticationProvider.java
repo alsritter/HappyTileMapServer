@@ -75,7 +75,6 @@ public class EmailAuthenticationProvider implements AuthenticationProvider, Prov
      */
     @Override
     public boolean supports(Class<?> authentication) {
-        boolean assignableFrom = EmailAuthenticationToken.class.isAssignableFrom(authentication);
-        return assignableFrom;
+        return EmailAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

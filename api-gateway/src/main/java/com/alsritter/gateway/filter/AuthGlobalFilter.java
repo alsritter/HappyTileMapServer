@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 
 /**
- * 将登录用户的 JWT 转化成用户信息的全局过滤器
+ * 将登录用户的 Token 转成用户信息（从 Redis 里面取得）
  *
  * @author alsritter
  * @version 1.0

@@ -7,7 +7,6 @@ import com.alsritter.oauth2_2.OAuthApplication;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -40,12 +39,17 @@ import java.util.Random;
 @Slf4j
 @Validated
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/handler")
 public class HandlerController {
 
     private final JavaMailSender javaMailSender;
     private final MailProperties mailProperties;
+
+    public HandlerController(JavaMailSender javaMailSender,
+                             MailProperties mailProperties) {
+        this.javaMailSender = javaMailSender;
+        this.mailProperties = mailProperties;
+    }
 
     private Template template;
 
@@ -59,6 +63,7 @@ public class HandlerController {
         //加载模板
         this.template = configuration.getTemplate("mail.ftl");
     }
+
 
     /**
      * 设置手机验证码

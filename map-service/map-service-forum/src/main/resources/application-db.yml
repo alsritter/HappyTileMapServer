@@ -41,6 +41,8 @@ mybatis-plus:
       insert-strategy: not_empty
       update-strategy: not_empty
       select-strategy: not_empty
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
     datacenter-id: ${nodeId:${spring.nodeId:1}}
     worker-id: ${nodeId:${spring.nodeId:1}}
     banner: false

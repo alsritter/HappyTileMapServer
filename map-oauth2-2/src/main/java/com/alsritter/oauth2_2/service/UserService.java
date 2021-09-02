@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -37,16 +36,6 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
     private final IUserClient userClient;
     private final PasswordEncoder passwordEncoder;
-
-    // private List<UserDTO> userList;
-
-    // @PostConstruct
-    // public void initData() {
-    //     String password = passwordEncoder.encode("123456");
-    //     userList = new ArrayList<>();
-    //     userList.add(new UserDTO(1L, "alsritter", password, 1, CollUtil.toList("ADMIN")));
-    //     userList.add(new UserDTO(2L, "andy", password, 1, CollUtil.toList("TEST")));
-    // }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -78,12 +67,12 @@ public class UserService implements UserDetailsService {
         }
 
         if (Objects.requireNonNull(body).getUser() == null)
-            throw new BusinessException(ResultCode.USERNAME_PASSWORD_ERROR);
+            throw new BusinessException(ResultCode.USERNAME_ERROR);
 
         return buildSecurityUser(body);
     }
 
-    public SecurityUser getUserPhone(String phone) {
+    public SecurityUser getUserByPhone(String phone) {
         SecurityUserDto body = null;
         try {
             body = userClient.userInfoByPhone(phone);
@@ -115,7 +104,6 @@ public class UserService implements UserDetailsService {
      * 将从 feign 取得的数据构造成 SecurityUser
      */
     private SecurityUser buildSecurityUser(SecurityUserDto body) {
-        //
         SecurityUser securityUser = new SecurityUser();
         securityUser.setUserAccount(body.getUser().getUsername());
         securityUser.setUserPassword(body.getUser().getPassword());

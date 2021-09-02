@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,10 +23,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = {"security_user:"}) // 统一指定 value 的值
 public class SecurityUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> implements SecurityUserService {
     private final TbPermissionMapper permissionMapper;
     private final TbRoleMapper roleMapper;
 
+    @Cacheable(key = "#id")
     @Override
     public SecurityUserDto getUserInfoById(long id) {
         TbUser tbUser = new TbUser();
@@ -33,6 +37,7 @@ public class SecurityUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> i
         return getUserInfo(tbUser);
     }
 
+    @Cacheable(key = "#username")
     @Override
     public SecurityUserDto getUserInfoByName(String username) {
         TbUser tbUser = new TbUser();
@@ -41,6 +46,7 @@ public class SecurityUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> i
         return getUserInfo(tbUser);
     }
 
+    @Cacheable(key = "#email")
     @Override
     public SecurityUserDto getUserInfoByEmail(String email) {
         TbUser tbUser = new TbUser();
@@ -49,6 +55,7 @@ public class SecurityUserServiceImpl extends ServiceImpl<TbUserMapper, TbUser> i
         return getUserInfo(tbUser);
     }
 
+    @Cacheable(key = "#phone")
     @Override
     public SecurityUserDto getUserInfoByPhone(String phone) {
         TbUser tbUser = new TbUser();

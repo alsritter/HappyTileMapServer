@@ -27,11 +27,17 @@ public class ResourceService {
     public void initData() {
         // 先清空原本 Redis 里面的数据
         redisTemplate.delete(RedisConstant.RESOURCE_ROLES_MAP);
+        redisTemplate.delete(RedisConstant.RESOURCE_PUBLIC_PERMISSION_LIST);
+
         Map<String, List<String>> resourceRolesMap = userClient.getPermission();
+        List<String> publicPermission = userClient.getPublicPermission();
         // Map<String, List<String>> resourceRolesMap = new HashMap<>();
         // resourceRolesMap.put("/api/hello", CollUtil.toList("ADMIN"));
         // resourceRolesMap.put("/api/user/currentUser", CollUtil.toList("ADMIN", "TEST"));
         // resourceRolesMap.put("/discovery/instances", CollUtil.toList("ADMIN", "TEST", "USER"));
         redisTemplate.opsForHash().putAll(RedisConstant.RESOURCE_ROLES_MAP, resourceRolesMap);
+        // leftPushAll 有个坑，所以必须传入数组，否则默认传的是一个整体
+        redisTemplate.opsForList().leftPushAll(RedisConstant.RESOURCE_PUBLIC_PERMISSION_LIST, publicPermission.toArray(new String[0]));
+
     }
 }

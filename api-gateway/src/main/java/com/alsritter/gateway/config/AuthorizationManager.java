@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 /**
  * 鉴权管理器，用于判断是否有资源的访问权限
- *
+ * <p>
  * 注意：Zuul 网关导致请求头信息丢失的解决办法
  * https://blog.csdn.net/czx2018/article/details/105618223
  *
@@ -36,8 +36,11 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
         URI uri = authorizationContext.getExchange().getRequest().getURI();
+        String path = uri.getPath();
+
         //从 Redis 中获取当前路径可访问角色列表
-        Object obj = redisTemplate.opsForHash().get(RedisConstant.RESOURCE_ROLES_MAP, uri.getPath());
+        Object obj = redisTemplate.opsForHash().get(RedisConstant.RESOURCE_ROLES_MAP, path);
+
         final List<String> authorities = Convert.toList(String.class, obj).stream()
                 .map(i -> i = (AuthConstant.AUTHORITY_PREFIX + i)
                         .toUpperCase(Locale.ROOT))
@@ -47,22 +50,8 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         return mono
                 .filter(Authentication::isAuthenticated)
                 .flatMapIterable(Authentication::getAuthorities)
-                // .flatMapIterable(x -> {
-                //     Authentication x1 = x;
-                //     Collection<? extends GrantedAuthority> xAuthorities = x1.getAuthorities();
-                //     return xAuthorities;
-                // })
                 .map(GrantedAuthority::getAuthority)
-                // .map(x -> {
-                //     String authority = x.getAuthority();
-                //     return authority;
-                // })
-                // .any(o -> {
-                //     boolean contains = "SCOPE_ALL".equals(o) || authorities.contains(o);
-                //     System.out.println(contains);
-                //     return contains;
-                // })
-                .any(o -> "SCOPE_ALL".equals(o) || authorities.contains(AuthConstant.AUTHORITY_PREFIX +  o))
+                .any(o -> "SCOPE_ALL".equals(o) || authorities.contains(AuthConstant.AUTHORITY_PREFIX + o))
                 // .any(authorities::contains)
                 .map(AuthorizationDecision::new)
                 .defaultIfEmpty(new AuthorizationDecision(false));

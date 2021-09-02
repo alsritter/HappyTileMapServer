@@ -17,7 +17,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
-import org.springframework.security.oauth2.server.resource.introspection.BadOpaqueTokenException;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionException;
 import org.springframework.security.oauth2.server.resource.introspection.ReactiveOpaqueTokenIntrospector;
 import org.springframework.util.Assert;
@@ -35,7 +34,7 @@ import static org.springframework.security.oauth2.server.resource.introspection.
 
 /**
  * 参考默认的检查工具类
- * NimbusReactiveOpaqueTokenIntrospector
+ * {@link org.springframework.security.oauth2.server.resource.introspection.NimbusReactiveOpaqueTokenIntrospector}
  * <p>
  * 检查 CheckTokenEndpoint 工具类
  *
@@ -43,28 +42,15 @@ import static org.springframework.security.oauth2.server.resource.introspection.
  * @version 1.0
  **/
 @Slf4j
-public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTokenIntrospector {
+public class CustomNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTokenIntrospector {
 
     private final URI introspectionUri;
-    private final WebClient webClient;
+    private final WebClient.Builder webClient;
 
-    public MyNimbusReactiveOpaqueTokenIntrospector(String introspectionUri, String clientId, String clientSecret) {
+    public CustomNimbusReactiveOpaqueTokenIntrospector(String introspectionUri, WebClient.Builder webClient) {
         Assert.hasText(introspectionUri, "introspectionUri cannot be empty");
-        Assert.hasText(clientId, "clientId cannot be empty");
-        Assert.notNull(clientSecret, "clientSecret cannot be null");
-
-        this.introspectionUri = URI.create(introspectionUri);
-        this.webClient = WebClient.builder()
-                .defaultHeaders(h -> h.setBasicAuth(clientId, clientSecret))
-                .build();
-    }
-
-    public MyNimbusReactiveOpaqueTokenIntrospector(String introspectionUri, WebClient webClient) {
-        Assert.hasText(introspectionUri, "introspectionUri cannot be null");
-        Assert.notNull(webClient, "webClient cannot be null");
-
-        this.introspectionUri = URI.create(introspectionUri);
         this.webClient = webClient;
+        this.introspectionUri = URI.create(introspectionUri);
     }
 
     @Override
@@ -76,16 +62,16 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
                 .map(this::castToNimbusSuccess)
                 .doOnNext(response -> validate(token, response))
                 .map(this::convertClaimsSet);
-                // .onErrorMap(e -> !(e instanceof OAuth2IntrospectionException || e instanceof BusinessException), this::onError);
+        // .onErrorMap(e -> !(e instanceof OAuth2IntrospectionException || e instanceof BusinessException), this::onError);
     }
 
     /**
      * 根据 Token 发请求校验（oauth/check_token）
      */
     private Mono<ClientResponse> makeRequest(String token) {
-        return this.webClient.post()
+        return this.webClient.build().post()
                 .uri(this.introspectionUri)
-                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .body(BodyInserters.fromFormData("token", token))
                 .exchange();
     }
@@ -98,47 +84,22 @@ public class MyNimbusReactiveOpaqueTokenIntrospector implements ReactiveOpaqueTo
         HTTPResponse response = new HTTPResponse(responseEntity.rawStatusCode());
         response.setHeader(HttpHeaders.CONTENT_TYPE, responseEntity.headers().contentType().get().toString());
         if (response.getStatusCode() != HTTPResponse.SC_OK) {
-
-            // return responseEntity.bodyToMono(String.class)
-            //         .doOnNext(System.out::println)
-            //         .then(Mono.error(new OAuth2IntrospectionException(
-            //                 "Introspection endpoint responded with " + response.getStatusCode())));
-
             // Reactor 使用参考：https://stackoverflow.com/questions/53595420/correct-way-of-throwing-exceptions-with-reactor
-            return responseEntity.bodyToMono(String.class)
+            return responseEntity
+                    .bodyToMono(String.class)
                     .doOnNext(System.out::println)
-                    // .handle((json, sink) -> {
-                    //     cn.hutool.json.JSONObject jsonObject = JSONUtil.parseObj(json);
-                    //     Integer code = jsonObject.getInt("code");
-                    //     String message = jsonObject.getStr("message");
-                    //
-                    //     if (code != null && message != null) {
-                    //
-                    //         if (code == ResultCode.ACCOUNT_EXPIRED.getCode()) {
-                    //             sink.error(new BusinessException(ResultCode.ACCOUNT_EXPIRED));
-                    //         }
-                    //
-                    //         sink.error(new BusinessException(code, message));
-                    //     } else {
-                    //         sink.error(new OAuth2IntrospectionException("Introspection endpoint responded with "
-                    //                 + response.getStatusCode()));
-                    //     }
-                    // });
                     .flatMap(json -> {
-                            cn.hutool.json.JSONObject jsonObject = JSONUtil.parseObj(json);
-                            Integer code = jsonObject.getInt("code");
-                            String message = jsonObject.getStr("message");
-
-                            if (code != null && message != null) {
-
-                                if (code == ResultCode.ACCOUNT_EXPIRED.getCode()) {
-                                    return Mono.error(new BusinessException(ResultCode.ACCOUNT_EXPIRED));
-                                }
-
-                                return Mono.error(new BusinessException(code, message));
-                            } else {
-                                return Mono.error(new BusinessException(ResultCode.ACCOUNT_INTROSPECTION_EXCEPTION));
+                        cn.hutool.json.JSONObject jsonObject = JSONUtil.parseObj(json);
+                        Integer code = jsonObject.getInt("code");
+                        String message = jsonObject.getStr("message");
+                        if (code != null && message != null) {
+                            if (code == ResultCode.ACCOUNT_EXPIRED.getCode()) {
+                                return Mono.error(new BusinessException(ResultCode.ACCOUNT_EXPIRED));
                             }
+                            return Mono.error(new BusinessException(code, message));
+                        } else {
+                            return Mono.error(new BusinessException(ResultCode.ACCOUNT_INTROSPECTION_EXCEPTION));
+                        }
                     });
         }
 

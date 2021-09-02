@@ -61,7 +61,7 @@ public class PhoneAuthenticationProvider implements AuthenticationProvider, Prov
         }
 
         //根据手机号获取用户信息
-        SecurityUser user = userService.getUserPhone(token.getPhone());
+        SecurityUser user = userService.getUserByPhone(token.getPhone());
 
         if (user != null) {
             // 写入用户信息并返回认证类
