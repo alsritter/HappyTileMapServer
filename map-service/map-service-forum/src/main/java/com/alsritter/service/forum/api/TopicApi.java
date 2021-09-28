@@ -78,7 +78,8 @@ public class TopicApi {
      */
     @PostMapping("/send-topic")
     public CommonResult<Long> sendTopic(@RequestBody @Validated SendTopicTo data) {
-        return CommonResult.success(tbTopicService.sendTopic(data.getTag(),
+        return CommonResult.success(
+                tbTopicService.sendTopic(data.getTag(),
                 data.getTitle(), data.getContent(),
                 UserContext.getUser().getUserId()));
     }

@@ -31,10 +31,12 @@ public class UserApi {
 
     /**
      * 根据 Token 取得用户的登陆态
+     * 这个 @Validated 对 @RequestParam 是无效的
      */
     @GetMapping("/getuser")
-    public CommonResult<UserInfoVO> getUser() {
-        return CommonResult.success(UserContext.getUser());
+    public CommonResult<UserInfoVO> getUser(@RequestParam(required = true) String token) {
+        // 对于公共的 API 不能使用 UserContext.getUser() 取得 Token
+        return CommonResult.success(authClient.getUserInfoByToken(token));
     }
 
     /**

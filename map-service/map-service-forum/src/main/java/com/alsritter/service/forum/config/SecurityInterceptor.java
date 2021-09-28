@@ -1,5 +1,6 @@
 package com.alsritter.service.forum.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.alsritter.serviceapi.auth.domain.UserInfoVO;
 import com.alsritter.serviceapi.auth.feign.IAuthClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,12 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String accessToken = request.getHeader("Authorization");
-        if (accessToken != null) {
+        if (!StrUtil.isEmpty(accessToken)) {
             accessToken = accessToken.replaceFirst("Bearer ", "");
             UserInfoVO user = authClient.getUserInfoByToken(accessToken);
             UserContext.setUser(user);
         }
+
         return true;
     }
 

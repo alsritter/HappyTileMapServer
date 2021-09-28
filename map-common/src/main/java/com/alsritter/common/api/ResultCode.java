@@ -53,7 +53,9 @@ public enum ResultCode implements IErrorCode {
     SEND_TOPIC_FAILED(60003, "发送文章错误"),
     SEND_COMMENT_FAILED(60004, "发送评论失败"),
     UPDATE_AVATAR_FAILED(60005, "更新头像失败"),
-    MODIFY_PASSWORD_FAILED(60006, "修改密码失败")
+    MODIFY_PASSWORD_FAILED(60006, "修改密码失败"),
+
+    ES_INSERT_FAILED(7001, "ES 插入失败")
     ;
 
 

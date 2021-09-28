@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: map-service-search
+  elasticsearch:
+    rest:
+      uris: http://localhost:19200
+      password:
+      username:
+      read-timeout: 1m
+      connection-timeout: 1s

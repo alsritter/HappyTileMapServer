@@ -45,9 +45,6 @@ public class CustomServerWebExchangeMatcher implements ServerWebExchangeMatcher 
 
         if (publicUrls != null) {
             // 如果是访问的公共 URL 直接放行
-            // if (publicUrl.contains(path.value())) {
-            //     return MatchResult.match();
-            // }
             for (Object publicUrl : publicUrls) {
                 if (pathMatcher.match(publicUrl.toString(), path.value())) {
                     return MatchResult.match();

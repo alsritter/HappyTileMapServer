@@ -15,6 +15,7 @@
         <module>map-service-user</module>
         <module>map-service-forum</module>
         <module>map-service-test02</module>
+        <module>map-service-search</module>
     </modules>
 
     <dependencies>
