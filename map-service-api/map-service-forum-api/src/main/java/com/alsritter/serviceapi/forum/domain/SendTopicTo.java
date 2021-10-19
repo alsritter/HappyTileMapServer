@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * @author alsritter
@@ -15,7 +16,7 @@ import javax.validation.constraints.Size;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(description = "发送主题")
-public class SendTopicTo {
+public class SendTopicTo  implements Serializable {
     @NotBlank
     @ApiModelProperty(value = "主题的标签")
     String tag;

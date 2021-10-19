@@ -50,3 +50,7 @@ myremote:
       client-id: webClient
       client-secret: secret
 
+rocketmq:
+  name-server: 192.168.211.142:19876
+  producer:
+    group: forum-producer-group

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 
 /**
  * @author alsritter
@@ -14,7 +15,7 @@ import javax.validation.constraints.*;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(description = "发送评论")
-public class SendCommentTo {
+public class SendCommentTo implements Serializable {
     @NotNull
     @ApiModelProperty(value = "评论的对象")
     Long masterId;
