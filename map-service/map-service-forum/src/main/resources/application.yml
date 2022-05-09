@@ -51,6 +51,6 @@ myremote:
       client-secret: secret
 
 rocketmq:
-  name-server: 192.168.211.142:19876
+  name-server: 127.0.0.1:19876
   producer:
     group: forum-producer-group

@@ -1,4 +1,4 @@
-package com.alsritter.oauth2_2.config;
+package com.alsritter.service.forum.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,6 +37,7 @@ import javax.validation.constraints.NotNull;
 @RequestMapping("/topics")
 @RequiredArgsConstructor
 public class TopicApi {
+
     private final RedisTemplate<String, Object> redisTemplate;
     private final TbTopicService tbTopicService;
     private final RocketMQTemplate rocketMQTemplate;

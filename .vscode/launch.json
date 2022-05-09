@@ -1,0 +1,44 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-UserApplication<map-service-user>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "mainClass": "com.alsritter.service.user.UserApplication",
+      "projectName": "map-service-user",
+      "args": ""
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-SpringCloudGatewayApplication<api-gateway>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "mainClass": "com.alsritter.gateway.SpringCloudGatewayApplication",
+      "projectName": "api-gateway",
+      "args": ""
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-OAuthApplication<map-oauth2-2>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "mainClass": "com.alsritter.oauth2_2.OAuthApplication",
+      "projectName": "map-oauth2-2",
+      "args": ""
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-ForumApplication<map-service-forum>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "mainClass": "com.alsritter.service.forum.ForumApplication",
+      "projectName": "map-service-forum",
+      "args": ""
+    }
+  ]
+}
